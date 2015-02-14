@@ -1,0 +1,145 @@
+Automatic Array Construction:
+`int[][] table = new int[x][y]` // specify the dimensions of arrays in x, y
+
+Initializers:
+when you declare a var and assign at the same time
+```
+Human[] b = {kayla, rishi, new Human("Paul")}; // creates an array of Humans
+int[][] c = {{ 7, 3, 4}, {x}, {8, 6, 5, 4}, {y+2, 3}};
+```
+
+can't do this: `d = {3, 7};`
+can't do this: `f({1, 2, 3});` => these result in compile-time errors
+
+int[] a, b, c; // all three vars reference arrays
+int a[], b, c[][] // a is a 1-dim arr of ints, b is an int, and c is a 2-dim arr of ints
+
+
+Array of objects:
+- When you create arr of objs, java doesn't create the objs for you
+```
+Fraction[] f = new Fraction[5];
+for(int i=0; i<5; i++) {
+    f[i] = new Fraction(i, 6); // add objs in arr
+}
+
+// on main()'s parameter
+class Echo {
+    // String[] args is a list of command-line args
+    public static void main(String[] args) {
+        for(int i=0; i < args.length; i++) {
+            System.out.println(args[i]);
+        }
+    }
+
+}
+
+prompt% java Echo kneel and worship Java
+
+```
+
+"do" loops:
+- always executes loop body at least once
+```
+do {
+    s = keybd.readLine();
+    process(s);
+} while (s.length() > 0);
+```
+
+The "break" and "continue":
+"break" exits the innermost "switch"
+or loop enclosing the break
+"a time and a half"
+```
+
+s = keybd.readLine(); // do a readline before
+while(s.length() > 0) {
+    process(s);
+    s = keybd.readLine(); // do reaLine again
+}
+
+OR...
+while(true) {               // forever loop until break statement occurs
+    s = keybd.readLine();   // read once
+    if(s.length() == 0) {
+        break;              // exit the loop if length is 0
+    }
+    process(s);             // else process
+}
+
+// if you have 2 exits: after the 10th time and if s.length is 0
+for(int i=0;i<10;i++) {
+    s = keybd.readLine();
+    if(s.length() == 0) {
+        break;
+    }
+    process(s);
+}
+```
+
+where break jumps to...
+
+if {
+    break; (!!! doesn't jump to end of if statement. will look for loop / switch statement!
+}
+
+labeled break statements
+```
+test: // this is a label for the if statement
+ if(x == 0) {
+    loop: // label for the while loop below
+        while(i<9) {
+            stuff: { // label for the switch statement below
+                switch(z[i]) {
+                    case 0: break; // breaks out of switch statement
+                    case 1: break stuff; // breaks out of entire switch statement
+                    case 2: break loop; // breaks out of while loop
+                    case 3: break test; // breaks out of outer if statement
+                    case 4: continue; // not apply to switch; applies to the while loop
+                    default: continue loop;
+                }
+                statement1();
+            }
+            statement2();
+            i++;
+            // continue will jump to here, both continue and continue loop
+        }
+        statement3();
+ }
+ statement4();
+
+```
+
+continue statement:
+- only for loops
+- doesn't exit the loop; just jumps to the end of the body but is still inside the loop
+- another iteration may start (if condition of the while/do/for is satisfied)
+```
+int i = 0;
+while(i<10) {
+    if(condition(i)) {
+        continue; // jumps to end of the inside of the loop, skipping the i++
+    }
+    call(i);
+    i++;
+}
+
+for(int i=0;i<10;i++) {
+    if(condition(i)) {
+        continue; // i++ gets executed at every iteration
+    }
+    call(i);
+}
+
+```
+
+Constants:
+"final" keyword: value that can never be changed!
+
+BAD: if(month == 2) { ...
+GOOD: public final static int FEBRUARY = 2;
+    if (month == FEBRUARY ) { ...
+
+
+N.B.: For any array x, x.length is a final field, which is why you can't change it.

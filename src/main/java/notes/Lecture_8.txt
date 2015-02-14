@@ -1,0 +1,7 @@
+A private method / field is invisible & inaccessible to other classes
+- prevent corruption by other classes
+- insure that other classes won't depend on it, so you can easily change
+    implementation of your program without causing other classes to fail
+
+
+
