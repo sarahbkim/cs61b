@@ -204,8 +204,10 @@ class Date {
         int dEpoch = dateToEpoch(d);
         if(d.isBefore(this)) {
             return thisEpoch - dEpoch;
+        } else {
+            return -(dEpoch - thisEpoch);
         }
-            return -(dEpoch - thisEpoch+1);
+
     }
 
     private int dateToEpoch(Date d) {
@@ -282,7 +284,10 @@ class Date {
                 d3.difference(d1));
         System.out.println(d3 + " - " + d4  + " should be -422: " +
                 d3.difference(d4));
-        System.out.println(d5 + " - " + d4  + " should be 48762: " +
+        System.out.println(d5 + " - " + d4  + " should be 48763: " +
                 d5.difference(d4));
+        Date d8 = new Date(9, 15, 2015);
+        Date d9 = new Date(6, 1, 2013);
+        System.out.println(d9 + " - " + d8 + " should be -837: " + d9.difference(d8));
     }
 }
