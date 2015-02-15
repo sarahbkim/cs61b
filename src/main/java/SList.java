@@ -21,19 +21,28 @@ public class SList {
     /**
      *  SList() constructs an empty list.
      **/
-
     public SList() {
         size = 0;
         head = null;
         tail = null;
     }
 
-    public SListNode getHead() {
-        return head;
+    /**
+     * getHead() is gets the head and tail of the SList
+     * @return item if SList is not empty
+     */
+    public Object getHead() {
+        if(size>0) {
+            return head.item;
+        }
+        return null;
     }
 
-    public SListNode getTail() {
-        return tail;
+    public Object getTail() {
+        if(size>1) {
+            return tail.item;
+        }
+        return null;
     }
 
     /**
@@ -60,8 +69,12 @@ public class SList {
      **/
 
     public void insertFront(Object obj) {
-        head = new SListNode(obj, head);
-        tail = head.next;
+        if(tail==null) {
+            head = new SListNode(obj, head);
+            tail = head.next;
+        } else {
+            head = new SListNode(obj, head);
+        }
         size++;
     }
 
@@ -143,16 +156,39 @@ public class SList {
         // Fill in your solution for Part I here.
         SList a = new SList();
         a.insertFront(new Integer(12));
+        System.out.println(a.toString());
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
         a.insertFront(9);
+        System.out.println(a.toString());
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
         a.insertFront(6);
         System.out.println(a.toString());
-        a.insertEnd(15);
-        a.insertFront(3);
-        a.toString();
-        System.out.println(a.toString());
-        testEmpty();
-        testAfterInsertFront();
-        testAfterInsertEnd();
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
+        SList b = new SList();
+        b.insertEnd(4);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+
+        b.insertEnd(6);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+
+        b.insertEnd(10);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+
+//        testEmpty();
+//        testAfterInsertFront();
+//        testAfterInsertEnd();
     }
 
 
