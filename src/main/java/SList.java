@@ -113,14 +113,15 @@ public class SList {
             return null;
         } else {
             currentNode = head;
-            while (position > 1) {
-                currentNode = currentNode.next;
-                if (currentNode == null) {
+            while(position>1) {
+                if(currentNode==null) {
                     return null;
                 }
+                currentNode = currentNode.next;
                 position--;
             }
             return currentNode.item;
+
         }
     }
 
@@ -185,7 +186,8 @@ public class SList {
         System.out.println(b.toString());
         System.out.println("head is: " + b.getHead());
         System.out.println("tail is: " + b.getTail());
-
+        System.out.println("1st item in b is: " + b.nth(1));
+        System.out.println("3rd item in b is: " + b.nth(3));
 //        testEmpty();
 //        testAfterInsertFront();
 //        testAfterInsertEnd();
