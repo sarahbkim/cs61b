@@ -1,0 +1,24 @@
+- How long does binary search take?
+    - if array is n elements, log(n) (base 2 log)
+        - n...n/2...n/4...n/8...1
+        - log(billion) -> 30
+    - Goodrich Thomasia 4.1.2 and 4.1.7
+- Enough stack space for a few thousands of stack frames
+    - but if you have a recursive algorithm that ends up being a log there will be enough space
+    - else, use iterative method instead...
+- Binary search works on arrays but not on linked lists!
+
+Scope & recursion:
+- scope of a var: portion of program that can access the variable
+    - class var: in scope everywhere in the class except when shadowed by local vars
+    - fully qualified class var (System.out) in scope in class, can't be shadowed
+        if public, they're in scope in all classes
+    - instance vars: in scope in non-static methods of the class, except when shadowed
+    - fully qualified instance vars ("kayla.name", "this.item")
+    - local vars & parameters: only in scope inside the method that defines them
+        only for topmost stackframe
+    -
+
+
+
+

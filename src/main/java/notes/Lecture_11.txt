@@ -1,0 +1,18 @@
+
+Testing
+-------
+
+.equals()
+- every class has an equals() method, and if you don't define explicitly,
+- Default: r1.equals(r2) same as r1 == r2 (if they point to same obj, reference equality)
+- Many classes define equals to compare content of two objects (i.e. String)
+
+
+4 degrees of equality:
+----------------------
+- reference equality, ==
+- shallow structural equality: fields are ==
+- deep structural equality: fields are equals()
+- logical equality (where two things are equal from a mathematical pov)
+    - ex: fractions 1/3 and 2/6. are these equal? yeah...
+    - ex: "set" objects are equals if they contain the same elements, regardless of order

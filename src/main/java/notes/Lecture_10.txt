@@ -1,0 +1,83 @@
+Inheritance
+-----------
+```
+
+public class TailList extends SList {
+    /* head and size fields are inherited*/
+    private SListNode tail;
+
+    public void insertEnd(Object obj) {
+        /* Solution to lab 3 */
+    }
+}
+
+```
+
+TailList is a subclass of SList
+SList is the superclass of TailList
+
+A subclass can modify a superclass in 3 different ways:
+- can declare new fields
+- can declare new methods
+- can override old methods with new implementation
+
+Java executes a TailList constructor, but first it executes SList() constructor.
+public TailList() {
+    // SList() sets size=0, head=null
+    tail = null;
+
+}
+
+to change the SList constructor when I call TailList...
+```
+public TailList(int x) {
+    super(x); // has to be the first statement in the constructor!
+    tail = null;
+}
+```
+
+Invoking overridden methods:
+```
+public void insertFront(Object obj) {
+    super.insertFront(obj); // this calls the superclass' method; doesn't need to be the first line
+    if(size==1) {
+        tail = head;
+    }
+}
+```
+
+"protected" keyword:
+--------------------
+can't declare head and size fields to be private if I want to extend the SList
+class and use it TailList. => use 'protected' instead!
+```
+public class SList {
+    protected SListNode head;
+    protected int size;
+    // ...
+}
+```
+"protected" fields/methods is visible to declaring class and to all of its subclasses
+"private" fields aren't even avail in subclasses
+
+
+Class Hierarchies:
+-----------------
+Object (superclass of every other class by default)
+subclasses have subclasses too
+
+
+Dynamic method lookup
+---------------------
+When we invoke overridden methods, Java calls the method for the object's
+dynamic type, regardless of static type!
+
+Every TailList is an SList
+SList s = new TailList(); // this works
+
+Not every SList is a TailList
+TailList t = new SList(); // compile-time error!
+
+static type: the type of a variable
+dynamic type: class of obj that the var references
+

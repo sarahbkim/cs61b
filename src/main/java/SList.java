@@ -75,6 +75,10 @@ public class SList {
         } else {
             head = new SListNode(obj, head);
         }
+
+//        if(size==1) {
+//            head = tail;
+//        }
         size++;
     }
 
