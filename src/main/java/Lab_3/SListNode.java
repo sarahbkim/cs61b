@@ -1,5 +1,5 @@
+package Hw_3;
 /* SListNode.java */
-
 /**
  *  SListNode is a class used internally by the SList class.  An SList object
  *  is a singly-linked list, and an SListNode is a node of a singly-linked

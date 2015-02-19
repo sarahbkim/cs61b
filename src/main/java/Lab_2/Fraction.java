@@ -1,3 +1,4 @@
+package Lab_2;
 /* Fraction.java */
 
 import java.io.*;

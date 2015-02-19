@@ -1,6 +1,6 @@
+package Lab_1;
 /* Names.java */
 
-import java.io.*;
 
 /** The Names class provides a single function, main, that will
  *   perform various manipulations of the name John Fitzgerald Kennedy. 
