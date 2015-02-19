@@ -1,11 +1,9 @@
+/* DList2.java */
+
 package Lab_4;
 
 /**
  * Created by sarahbkim on 2/18/15.
- */
-
-/* DList2.java */
-
 /**
  *  A DList2 is a mutable doubly-linked list.  Its implementation is
  *  circularly-linked and employs a sentinel (dummy) node at the head
@@ -81,6 +79,12 @@ public class DList2 {
      */
     public void insertFront(int i) {
         // Your solution here.
+        head.next = new DListNode2(i, head, head.next);
+        head.prev.prev = head.next;
+        for(int x=0; size > x + 1; x++) {
+            head.prev = head.next;
+        }
+        size++;
     }
 
     /**
@@ -89,6 +93,11 @@ public class DList2 {
      */
     public void removeFront() {
         // Your solution here.
+        if(size!=0) {
+            head.next = head.next.next;
+            head.next.prev = head;
+            size--;
+        }
     }
 
     /**

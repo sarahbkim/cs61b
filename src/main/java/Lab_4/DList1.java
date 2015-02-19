@@ -1,3 +1,5 @@
+/* DList1.java */
+
 package Lab_4;
 
 /**
@@ -66,7 +68,16 @@ public class DList1 {
      *  insertFront() inserts an item at the front of a DList1.
      */
     public void insertFront(int i) {
-        // Your solution here.
+        // if it's an empty list
+        if(size==0) {
+            head = new DListNode1(i);
+            tail = head;
+        } else {
+            head = new DListNode1(i, head);
+            tail = head.next;
+            tail.prev = head;
+        }
+        size++;
     }
 
     /**
@@ -74,7 +85,18 @@ public class DList1 {
      *  list is empty, do nothing.
      */
     public void removeFront() {
-        // Your solution here.
+        if(size>0){
+            DListNode1 prevHead = head;
+            head = prevHead.next;
+            if(head!=null) {
+                head.prev = null;
+            } else {
+                tail = null;
+            }
+            prevHead.next = null;
+            size--;
+        }
+
     }
 
     /**
@@ -170,13 +192,13 @@ public class DList1 {
             System.out.println("head.item is wrong.");
         }
         if (l.head.prev != null) {
-            System.out.println("head.prev is wrong.");
+            System.out.println("head.prev is wrong." + l.head.prev);
         }
         if (l.tail.item != 2) {
-            System.out.println("tail.item is wrong.");
+            System.out.println("tail.item is wrong." + l.head.prev);
         }
         if (l.tail.next != null) {
-            System.out.println("tail.next is wrong.");
+            System.out.println("tail.next is wrong." + l.head.prev);
         }
         if (l.size != 1) {
             System.out.println("size is wrong.");

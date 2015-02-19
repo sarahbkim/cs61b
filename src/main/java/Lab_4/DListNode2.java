@@ -1,3 +1,5 @@
+/* DListNode2 */
+
 package Lab_4;
 
 /**
@@ -31,6 +33,18 @@ public class DListNode2 {
         item = i;
         prev = null;
         next = null;
+    }
+
+    DListNode2(int i, DListNode2 prev) {
+        item = i;
+        this.prev = prev;
+        this.next = null;
+    }
+
+    DListNode2(int i, DListNode2 prev, DListNode2 next) {
+        item = i;
+        this.prev = prev;
+        this.next = next;
     }
 
 }
