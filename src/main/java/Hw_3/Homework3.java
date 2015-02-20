@@ -24,17 +24,15 @@ public class Homework3 {
      **/
 
     public static int[] smoosh(int[] ints) {
-        // Fill in your solution here.  (Ours is twelve lines long, not counting
-        // blank lines or lines already present in this file.)
-
         // if 1 or less elems in list, leave as is
         if(ints.length>2){
             boolean run = true;
             while(checkForDuplicates(ints)) {
                 // loop over each element, shifting numbers and adding -1 at end of list
                 for (int i=0;i<ints.length-1;i++) {
+                    // if these are duplicate values...
                     if (ints[i] == ints[i + 1]) {
-                        // shift all int forward one
+                        // shift each element in arr forward once
                         for (int j = i + 1; j < ints.length - 1; j++) {
                             ints[j] = ints[j + 1];
                         }
@@ -42,7 +40,6 @@ public class Homework3 {
                         ints[ints.length - 1] = -1;
                     }
                 }
-
             }
         }
         return ints;
