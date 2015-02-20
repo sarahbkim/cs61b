@@ -114,29 +114,20 @@ public class SList {
 
     // what to do when there's 2 duplicate items left?
     public void squish() {
-        while(this.checkDuplicates()) {
-            SListNode curr = head; // start at head
-            while(curr.next != null) {
-                if(curr.item.equals(curr.next.item)){
-                    if(curr.next.next!=null) {
-                        curr.next = curr.next.next;
-                        size--;
-                    }
+        if(head==null) {
+            return;
+        }
+        SListNode curr = head; // start at head
+        while(curr !=null && curr.next != null) {
+            if(curr.item.equals(curr.next.item)){
+                    curr.next = curr.next.next;
+                    size--;
+                } else {
+                    curr= curr.next;
                 }
-                curr = curr.next;
+
             }
-        }
-
-    }
-
-    public boolean checkDuplicates() {
-        for(int i=1;i<this.size-1;i++) {
-            if(this.nth(i).equals(this.nth(i+1))){
-                return true;
-            }
-        }
-        return false;
-
+        curr = curr.next;
     }
 
 
