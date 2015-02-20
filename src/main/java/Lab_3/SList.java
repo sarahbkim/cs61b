@@ -1,7 +1,5 @@
-package Hw_3;
-
+package Lab_3;
 /* SList.java */
-
 /**
  *  The SList class is a singly-linked implementation of the linked list
  *  abstraction.  SLists are mutable data structures, which can grow at either
@@ -10,18 +8,41 @@ package Hw_3;
  *  @author Kathy Yelick and Jonathan Shewchuk
  **/
 
-public class SList {
+//Your SList class will need to continually maintain a record of the last (tail)
+//        SListNode in an SList, and all SList’s methods will have to ensure that this
+//        record stays current.
 
+public class SList {
     private SListNode head;
+    private SListNode tail;
     private int size;
+
 
     /**
      *  SList() constructs an empty list.
      **/
-
     public SList() {
         size = 0;
         head = null;
+        tail = null;
+    }
+
+    /**
+     * getHead() is gets the head and tail of the SList
+     * @return item if SList is not empty
+     */
+    public Object getHead() {
+        if(size>0) {
+            return head.item;
+        }
+        return null;
+    }
+
+    public Object getTail() {
+        if(size>1) {
+            return tail.item;
+        }
+        return null;
     }
 
     /**
@@ -48,7 +69,12 @@ public class SList {
      **/
 
     public void insertFront(Object obj) {
-        head = new SListNode(obj, head);
+        if(tail==null) {
+            head = new SListNode(obj, head);
+            tail = head.next;
+        } else {
+            head = new SListNode(obj, head);
+        }
         size++;
     }
 
@@ -60,12 +86,14 @@ public class SList {
     public void insertEnd(Object obj) {
         if (head == null) {
             head = new SListNode(obj);
+            tail = head.next;
         } else {
             SListNode node = head;
             while (node.next != null) {
                 node = node.next;
             }
-            node.next = new SListNode(obj);
+            tail = new SListNode(obj);
+            node.next = tail;
         }
         size++;
     }
@@ -85,74 +113,16 @@ public class SList {
             return null;
         } else {
             currentNode = head;
-            while (position > 1) {
-                currentNode = currentNode.next;
-                if (currentNode == null) {
+            while(position>1) {
+                if(currentNode==null) {
                     return null;
                 }
+                currentNode = currentNode.next;
                 position--;
             }
             return currentNode.item;
+
         }
-    }
-
-    /**
-     *  squish() takes this list and, wherever two or more consecutive items are
-     *  equals(), it removes duplicate nodes so that only one consecutive copy
-     *  remains.  Hence, no two consecutive items in this list are equals() upon
-     *  completion of the procedure.
-     *
-     *  After squish() executes, the list may well be shorter than when squish()
-     *  began.  No extra items are added to make up for those removed.
-     *
-     *  For example, if the input list is [ 0 0 0 0 1 1 0 0 0 3 3 3 1 1 0 ], the
-     *  output list is [ 0 1 0 3 1 0 ].
-     *
-     *  IMPORTANT:  Be sure you use the equals() method, and not the "=="
-     *  operator, to compare items.
-     **/
-
-    // what to do when there's 2 duplicate items left?
-    public void squish() {
-        while(this.checkDuplicates()) {
-            SListNode curr = head; // start at head
-            while(curr.next != null) {
-                if(curr.item.equals(curr.next.item)){
-                    if(curr.next.next!=null) {
-                        curr.next = curr.next.next;
-                        size--;
-                    }
-                }
-                curr = curr.next;
-            }
-        }
-
-    }
-
-    public boolean checkDuplicates() {
-        for(int i=1;i<this.size-1;i++) {
-            if(this.nth(i).equals(this.nth(i+1))){
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-
-    /**
-     *  twin() takes this list and doubles its length by replacing each node
-     *  with two consecutive nodes referencing the same item.
-     *
-     *  For example, if the input list is [ 3 7 4 2 2 ], the
-     *  output list is [ 3 3 7 7 4 4 2 2 2 2 ].
-     *
-     *  IMPORTANT:  Do not try to make new copies of the items themselves.
-     *  Make new SListNodes, but just copy the references to the items.
-     **/
-
-    public void twin() {
-        // Fill in your solution here.  (Ours is seven lines long.)
     }
 
     /**
@@ -184,9 +154,43 @@ public class SList {
      **/
 
     public static void main (String[] args) {
-        testEmpty();
-        testAfterInsertFront();
-        testAfterInsertEnd();
+        // Fill in your solution for Part I here.
+        SList a = new SList();
+        a.insertFront(new Integer(12));
+        System.out.println(a.toString());
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
+        a.insertFront(9);
+        System.out.println(a.toString());
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
+        a.insertFront(6);
+        System.out.println(a.toString());
+        System.out.println("head is: " + a.getHead());
+        System.out.println("tail is: " + a.getTail());
+
+        SList b = new SList();
+        b.insertEnd(4);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+
+        b.insertEnd(6);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+
+        b.insertEnd(10);
+        System.out.println(b.toString());
+        System.out.println("head is: " + b.getHead());
+        System.out.println("tail is: " + b.getTail());
+        System.out.println("1st item in b is: " + b.nth(1));
+        System.out.println("3rd item in b is: " + b.nth(3));
+//        testEmpty();
+//        testAfterInsertFront();
+//        testAfterInsertEnd();
     }
 
 
