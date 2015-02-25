@@ -1,0 +1,127 @@
+Lists:
+- Store a list of ints as an arr.
+- Cons:
+    - insert item at start/middle of a list => time proportional to length of array
+    - arrays have fixed length
+
+```
+public class AList {
+  int a[];
+  int lastItem;
+
+  public AList() {
+    a = new int[10];                           // The number "10" is arbitrary.
+    lastItem = -1;
+  }
+
+  public void insertItem(int newItem, int location) {
+    int i;
+
+    if (lastItem + 1 == a.length) {               // No room left in the array?
+      int b[] = new int[2 * a.length];  // Allocate a new array, twice as long.
+      for (i = 0; i <= lastItem; i++) {      // Copy items to the bigger array.
+        b[i] = a[i];
+      }
+      a = b;                   // Replace the too-small array with the new one.
+    }
+    for (i = lastItem; i >= location; i--) {       // Shift items to the right.
+      a[i + 1] = a[i];
+    }
+    a[location] = newItem;
+    lastItem++;
+  }
+}
+```
+
+Linked Lists (a recursive data type)
+- made up of "nodes"
+- each node stores an item and a reference to the next node in the list
+```
+
+public class ListNode {
+    int item;
+    ListNode next; // points to next node in the list
+
+    // node operations - i.e. constructors!
+    public ListNode(int item, Listnode next) {
+        this.item = item;
+        this.next = next;
+    }
+
+    // constructor for null next nodes
+    public ListNode(int item) {
+        this(item, null);
+    }
+
+    public void insertAfter(int item) {
+        next = new ListNode(item, next); // 2nd next is the old val of next, before the assignment executes
+        // same as: this.next = new ListNode(item, next);
+    }
+
+    public ListNode nth(int position) {
+        if(position==1) {
+            return this;
+        } else if( (position < 1) || (next == null)) {
+            return null;
+        } else {
+            return next.nth(position - 1);
+        }
+
+    }
+
+    public static void main() {
+        ListNode l1 = new ListNode(7, new ListNode(0, new ListNode(6)));
+        l2.insertAfter(3);
+
+    }
+
+
+}
+
+```
+Pros of Linked Lists:
+- inserting item to middle of a list takes constant time if you have reference to previous node
+- lists can keep growing until memory runs out
+
+Cons of Linked Lists:
+- Finding the nth item of a linked list takes time proportional to length of list
+    - (Arrays you can do this in constant-time)
+
+
+Lists of Objects:
+- Reference any object by declaring reference of type `Object`
+```
+// Singly Linked List
+public class SListNode {
+    public Object item;
+    public SList Node next;
+}
+
+A List Class:
+- 2 problems with just using list nodes by themselves:
+-- How to insert at beginning with you have 2 items pointing to the start of the old list?
+-- How to represent an empty list?
+    x = null; => Run-time error if you try to call a method on a null obj
+
+- Need a separate list class that maintains the head of the list
+
+```
+public class SList {
+    private SListNode head;
+    private int size;
+
+    public SList() {
+        head = null;
+        size = 0;
+    }
+
+    public void insertFront(Object item) {
+        head = new SListNode(item, head);
+        size++;
+    }
+
+}
+
+
+
+```

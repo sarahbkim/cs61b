@@ -1,0 +1,43 @@
+A private method / field is invisible & inaccessible to other classes
+- prevent corruption by other classes
+- insure that other classes won't depend on it, so you can easily change
+    implementation of your program without causing other classes to fail
+
+
+- invariant: a fact about a data structure that is always true
+    - i.e. "A Date object always represents a valid date"
+
+An SList ADT:
+Another pro to having a separate SList class is that you can enforce
+invariants:
+    - "size" is always equal to the number of items you can get to in the list
+    - a list is never circularly linked
+How is this ensured?:
+    - the fields of SList(head and size) are private
+    - No method of Slist returns an SListNode! No way that an external class can
+        get hands on reference to a node on the list
+
+
+Doubly Linked Lists:
+- insert/delete at front of list is easy:
+```
+public void deleteFront() {
+    if(head!=null) {
+        head = head.next;
+    }
+    size--;
+}
+```
+- insert/delete at the end of the list takes a long time.
+```
+class DListNode {
+    Object item;
+    DListNode next;
+    DListNode prev;
+}
+
+class DList {
+    private DListNode head;
+    private DList tail;
+}
+```

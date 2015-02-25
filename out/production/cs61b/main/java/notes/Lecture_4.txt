@@ -1,0 +1,126 @@
+Primitive Types:
+- byte: 8-bit integer (-128 ... 127)
+- short: 16-bit integer (-32768...32767)
+- int: 32-bit integer ( ~ -2 billion ... ~ 2 billion)
+- long: 64-bit integers // should be my default
+- double: 65-bit floating point number // should be my default
+- float: 32-bit floating point int
+- boolean: "true" or "false"
+- char: single character, "h" for example
+
+N.B. double & float values must have a decimal point!
+
+```
+long x = 124L;
+int y = 124; // this automatically becomes an int
+
+float f = 18.9f; // force it to be a float
+
+double y = 18.0;
+```
+
+                Object Types    |   Primitive Types
+contains a...   reference           value
+defined by...   class definition    built-in
+create by...    "new" command       "6" - just write down!
+how init...     constructor         default val (0, generally, false in booleans)
+how used...     w/methods           w/operators (+, *, /)
+
+java.lang library:
+```
+// Math class:
+x = Math.abs(y);
+// Integer class:
+int x = Integer.parseInt("1984");
+// Double class:
+double d = Double.parseDouble("3.14"); // useful for reading in numbers from keyboard
+```
+
+Boolean values:
+a ... b ...  a && b ... a || b ... !a
+f     f         f          f        t
+t     f         f          t        f
+t     t         t          t        f
+
+Created by comparison operators:
+```
+==  // equals
+>, <,
+!=,
+...
+
+```
+
+Conditionals:
+```
+if (boolValue) {
+    statements;
+} else {
+    statements;
+}
+
+boolean pass = score >= 75;
+if (pass) {
+    output("You pass CS61B!");
+} else {
+    // score < 75;
+    output("You didn't pass");
+}
+
+// find max of 3 nums:
+if(x > y) {
+    if (x > z) {
+        max = x;
+    } else {
+        max = z;
+    }
+} else if (y > z) {
+    max = y;
+} else {
+    max = z;
+}
+
+```
+
+"switch" statements:
+switch(month) {
+   case 2:
+    days=28;
+    break;
+   case 4:
+   case 6:
+   case 9:
+   case 11:
+    days = 30;
+    break;
+   default:
+    days = 31;
+    break;
+}
+
+"return" kw:
+- causes method to end immediately:
+```
+public void myMethod(int x) {
+    if(x == 10) {
+        return;
+    }
+    output("x isn't 10");
+}
+```
+
+- means by which a function returns a value
+```
+public int daysInMonth(int month) {
+    switch(month) {
+       case 2:
+        return 28;
+       case 4:
+       case 6:
+       case 9:
+       case 11:
+        return 30;
+       default:
+        return 31;
+    }
+}
