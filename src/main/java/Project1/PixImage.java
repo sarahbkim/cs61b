@@ -196,28 +196,84 @@ public class PixImage {
         }
         // create a copy of the original PixImage
         PixImage blurred = this;
-        int[][][] blurred_arr = blurred.pixArray;
+        int[][][] blurred_arr;
 
-        // iterate of pixel array for blurred_arr
-        for(int i=0;i<blurred_arr.length;i++) {
-            for(int j=0;j<blurred_arr[i].length;j++) {
+        // iterate of each row of pixelArrs
+        for(int i=0;i<this.pixArray.length;i++) {
+            // iterate each pixel arr
+            for(int j=0;j<this.pixArray[i].length;j++) {
+                int[] pixel = this.pixArray[i][j];
+                int neighborCount = 1;
+                int avgR = (int)pixel[0];
+                int avgG = (int)pixel[1];
+                int avgB = (int)pixel[2];
 
-
-                // get the corners...
-                if(i==0 && j==0 || i==this.height-1 && j==0 || i==0 && j==this.width-1 || i==this.height-1 && j==this.width-1) {
-                    int[] pixel = blurred_arr[i][j];
-                }
-                // get all the edges...
-                else if(i==0 && j>0 && j<this.width-1 || i==this.height-1 && j>0 && j<this.width-1 || i>0 && i<this.height-1 && j==this.width-1 || i>0 && i<this.height-1 && j==0) {
-                    int[] pixel = blurred_arr[i][j];
-                }
-                // rest are insides
-                else {
-                    int[] pixel = blurred_arr[i][j];
-                    for(int k=0;k<pixel.length;k++){
-                        System.out.println(pixel[k]);
+                if(i - 1 >= 0) {
+                    int[] t = this.pixArray[i-1][j];
+                    avgR += (int)t[0];
+                    avgG += (int)t[1];
+                    avgB += (int)t[2];
+                    neighborCount++;
+                    if(j+1<this.pixArray[i][j].length) {
+                        int[] rtdiag = this.pixArray[i-1][j+1];
+                        avgR += (int)rtdiag[0];
+                        avgG += (int)rtdiag[1];
+                        avgB += (int)rtdiag[2];
+                        neighborCount++;
+                    }
+                    if(j-1>=0) {
+                        int[] ltdiag = this.pixArray[i-1][j-1];
+                        avgR += (int)ltdiag[0];
+                        avgG += (int)ltdiag[1];
+                        avgB += (int)ltdiag[2];
+                        neighborCount++;
                     }
                 }
+                if(i+1<this.pixArray.length) {
+                    int[] b = this.pixArray[i+1][j];
+                    avgR += (int)b[0];
+                    avgG += (int)b[1];
+                    avgB += (int)b[2];
+                    neighborCount++;
+
+                    if(j+1<this.pixArray[i][j].length) {
+                        int[] rbdiag = this.pixArray[i+1][j+1];
+                        avgR += (int)rbdiag[0];
+                        avgG += (int)rbdiag[1];
+                        avgB += (int)rbdiag[2];
+                        neighborCount++;
+                    }
+                    if(j-1>=0) {
+                        int[] lbdiag = this.pixArray[i+1][j-1];
+                        avgR += (int)lbdiag[0];
+                        avgG += (int)lbdiag [1];
+                        avgB += (int)lbdiag [2];
+                        neighborCount++;
+                    }
+                }
+                if(j+1<this.pixArray.length) {
+                    int[] r = this.pixArray[i][j+1];
+                    avgR += (int)r[0];
+                    avgG += (int)r[1];
+                    avgB += (int)r[2];
+                    neighborCount++;
+                }
+                if(j-1>=0) {
+                    int[] l = this.pixArray[i][j-1];
+                    avgR += (int)l[0];
+                    avgG += (int)l[1];
+                    avgB += (int)l[2];
+                    neighborCount++;
+                }
+
+                // these calculations are correct!
+                avgR = avgR/neighborCount;
+                avgG = avgG/neighborCount;
+                avgB = avgB/neighborCount;
+
+                // need to figure out this part ... 
+                short[] blurredPixel = {(short)avgR, (short)avgG, (short)avgB};
+                blurred_arr[i][j] = blurredPixel;
             }
 
         }
@@ -354,9 +410,9 @@ public class PixImage {
         // Be forwarned that when you write arrays directly in Java as below,
         // each "row" of text is a column of your image--the numbers get
         // transposed.
-        PixImage image1 = array2PixImage(new int[][] { { 0, 1, 0 },
-                { 1, 2, 1},
-                { 0, 1, 0 } });
+        PixImage image1 = array2PixImage(new int[][] { { 0, 10, 240 },
+                { 30, 120, 250 },
+                { 80, 250, 255 } });
         System.out.println("Testing getWidth/getHeight on a 3x3 image.  " +
                 "Input image:");
         System.out.print(image1);
@@ -369,10 +425,6 @@ public class PixImage {
 //        System.out.println("Testing setPixels");
 //        image1.setPixel(0, 2, (short) 10, (short) 30, (short) 225);
 //        doTest(image1.getBlue(0, 2) == (short)225 && image1.getRed(0, 2) == (short)10, "Incorrect setPixel value");
-
-        System.out.println("Testing toString() method");
-        String y = image1.toString();
-        System.out.println(y);
 
         PixImage blurTest = image1.boxBlur(1);
         blurTest.toString();
