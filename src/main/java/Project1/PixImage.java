@@ -194,91 +194,96 @@ public class PixImage {
         if(numIterations<=0) {
             return this;
         }
-        // create a copy of the original PixImage
-        PixImage blurred = this;
-        int[][][] blurred_arr;
 
-        // iterate of each row of pixelArrs
-        for(int i=0;i<this.pixArray.length;i++) {
-            // iterate each pixel arr
-            for(int j=0;j<this.pixArray[i].length;j++) {
-                int[] pixel = this.pixArray[i][j];
-                int neighborCount = 1;
-                int avgR = (int)pixel[0];
-                int avgG = (int)pixel[1];
-                int avgB = (int)pixel[2];
+        PixImage blurred = new PixImage(this.height, this.width);
+        int[][][] blurred_arr = blurred.pixArray;
 
-                if(i - 1 >= 0) {
-                    int[] t = this.pixArray[i-1][j];
-                    avgR += (int)t[0];
-                    avgG += (int)t[1];
-                    avgB += (int)t[2];
-                    neighborCount++;
-                    if(j+1<this.pixArray[i][j].length) {
-                        int[] rtdiag = this.pixArray[i-1][j+1];
-                        avgR += (int)rtdiag[0];
-                        avgG += (int)rtdiag[1];
-                        avgB += (int)rtdiag[2];
+        while(numIterations>0) {
+            // iterate of each row of pixelArrs
+            for(int i=0;i<this.pixArray.length;i++) {
+                // iterate each pixel arr
+                for(int j=0;j<this.pixArray[i].length;j++) {
+                    int[] pixel = this.pixArray[i][j];
+                    int neighborCount = 1;
+                    int avgR = (int)pixel[0];
+                    int avgG = (int)pixel[1];
+                    int avgB = (int)pixel[2];
+
+                    if(i - 1 >= 0) {
+                        int[] t = this.pixArray[i-1][j];
+                        avgR += (int)t[0];
+                        avgG += (int)t[1];
+                        avgB += (int)t[2];
+                        neighborCount++;
+                        if(j+1<this.pixArray[i][j].length) {
+                            int[] rtdiag = this.pixArray[i-1][j+1];
+                            avgR += (int)rtdiag[0];
+                            avgG += (int)rtdiag[1];
+                            avgB += (int)rtdiag[2];
+                            neighborCount++;
+                        }
+                        if(j-1>=0) {
+                            int[] ltdiag = this.pixArray[i-1][j-1];
+                            avgR += (int)ltdiag[0];
+                            avgG += (int)ltdiag[1];
+                            avgB += (int)ltdiag[2];
+                            neighborCount++;
+                        }
+                    }
+                    if(i+1<this.pixArray.length) {
+                        int[] b = this.pixArray[i+1][j];
+                        avgR += (int)b[0];
+                        avgG += (int)b[1];
+                        avgB += (int)b[2];
+                        neighborCount++;
+
+                        if(j+1<this.pixArray[i][j].length) {
+                            int[] rbdiag = this.pixArray[i+1][j+1];
+                            avgR += (int)rbdiag[0];
+                            avgG += (int)rbdiag[1];
+                            avgB += (int)rbdiag[2];
+                            neighborCount++;
+                        }
+                        if(j-1>=0) {
+                            int[] lbdiag = this.pixArray[i+1][j-1];
+                            avgR += (int)lbdiag[0];
+                            avgG += (int)lbdiag [1];
+                            avgB += (int)lbdiag [2];
+                            neighborCount++;
+                        }
+                    }
+                    if(j+1<this.pixArray.length) {
+                        int[] r = this.pixArray[i][j+1];
+                        avgR += (int)r[0];
+                        avgG += (int)r[1];
+                        avgB += (int)r[2];
                         neighborCount++;
                     }
                     if(j-1>=0) {
-                        int[] ltdiag = this.pixArray[i-1][j-1];
-                        avgR += (int)ltdiag[0];
-                        avgG += (int)ltdiag[1];
-                        avgB += (int)ltdiag[2];
+                        int[] l = this.pixArray[i][j-1];
+                        avgR += (int)l[0];
+                        avgG += (int)l[1];
+                        avgB += (int)l[2];
                         neighborCount++;
                     }
-                }
-                if(i+1<this.pixArray.length) {
-                    int[] b = this.pixArray[i+1][j];
-                    avgR += (int)b[0];
-                    avgG += (int)b[1];
-                    avgB += (int)b[2];
-                    neighborCount++;
 
-                    if(j+1<this.pixArray[i][j].length) {
-                        int[] rbdiag = this.pixArray[i+1][j+1];
-                        avgR += (int)rbdiag[0];
-                        avgG += (int)rbdiag[1];
-                        avgB += (int)rbdiag[2];
-                        neighborCount++;
-                    }
-                    if(j-1>=0) {
-                        int[] lbdiag = this.pixArray[i+1][j-1];
-                        avgR += (int)lbdiag[0];
-                        avgG += (int)lbdiag [1];
-                        avgB += (int)lbdiag [2];
-                        neighborCount++;
-                    }
-                }
-                if(j+1<this.pixArray.length) {
-                    int[] r = this.pixArray[i][j+1];
-                    avgR += (int)r[0];
-                    avgG += (int)r[1];
-                    avgB += (int)r[2];
-                    neighborCount++;
-                }
-                if(j-1>=0) {
-                    int[] l = this.pixArray[i][j-1];
-                    avgR += (int)l[0];
-                    avgG += (int)l[1];
-                    avgB += (int)l[2];
-                    neighborCount++;
+                    // these calculations are correct!
+                    avgR = avgR/neighborCount;
+                    avgG = avgG/neighborCount;
+                    avgB = avgB/neighborCount;
+
+                    // need to figure out this part ...
+                    int[] blurredPixel = {avgR, avgG, avgB};
+                    blurred_arr[i][j] = blurredPixel;
                 }
 
-                // these calculations are correct!
-                avgR = avgR/neighborCount;
-                avgG = avgG/neighborCount;
-                avgB = avgB/neighborCount;
-
-                // need to figure out this part ... 
-                short[] blurredPixel = {(short)avgR, (short)avgG, (short)avgB};
-                blurred_arr[i][j] = blurredPixel;
             }
 
+            blurred.pixArray = blurred_arr;
+            numIterations--;
         }
-
         return blurred;
+
     }
 
     /**
@@ -428,21 +433,21 @@ public class PixImage {
 
         PixImage blurTest = image1.boxBlur(1);
         blurTest.toString();
-//        System.out.println("Testing blurring on a 3x3 image.");
-//        doTest(image1.boxBlur(1).equals(
-//                        array2PixImage(new int[][] { { 40, 108, 155 },
-//                                { 81, 137, 187 },
-//                                { 120, 164, 218 } })),
-//                "Incorrect box blur (1 rep):\n" + image1.boxBlur(1));
-//        doTest(image1.boxBlur(2).equals(
-//                        array2PixImage(new int[][] { { 91, 118, 146 },
-//                                { 108, 134, 161 },
-//                                { 125, 151, 176 } })),
-//                "Incorrect box blur (2 rep):\n" + image1.boxBlur(2));
-//        doTest(image1.boxBlur(2).equals(image1.boxBlur(1).boxBlur(1)),
-//                "Incorrect box blur (1 rep + 1 rep):\n" +
-//                        image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
-//
+        System.out.println("Testing blurring on a 3x3 image.");
+        doTest(image1.boxBlur(1).equals(
+                        array2PixImage(new int[][] { { 40, 108, 155 },
+                                { 81, 137, 187 },
+                                { 120, 164, 218 } })),
+                "Incorrect box blur (1 rep):\n" + image1.boxBlur(1));
+        doTest(image1.boxBlur(2).equals(
+                        array2PixImage(new int[][] { { 91, 118, 146 },
+                                { 108, 134, 161 },
+                                { 125, 151, 176 } })),
+                "Incorrect box blur (2 rep):\n" + image1.boxBlur(2));
+        doTest(image1.boxBlur(2).equals(image1.boxBlur(1).boxBlur(1)),
+                "Incorrect box blur (1 rep + 1 rep):\n" +
+                        image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
+
 //        System.out.println("Testing edge detection on a 3x3 image.");
 //        doTest(image1.sobelEdges().equals(
 //                        array2PixImage(new int[][] { { 104, 189, 180 },
