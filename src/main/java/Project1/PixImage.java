@@ -2,6 +2,9 @@ package main.java.Project1;
 
 /* PixImage.java */
 
+import jdk.nashorn.internal.runtime.arrays.ArrayIndex;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.lang.reflect.Array;
 
 /**
@@ -312,6 +315,115 @@ public class PixImage {
         return intensity;
     }
 
+    /** edgeDetector(x, y)
+     * takes the x, y for pixel position and decides if it is at an edge or not
+     */
+    private boolean edgeDetector(int x, int y) {
+        boolean edge = false;
+        if(x < 0 | y < 0 | x > this.pixArray.length-1 | y > this.pixArray.length-1 ){
+            System.out.println("Need positive array index");
+        }
+        if (x == 0 | y == 0 | x == this.pixArray.length-1 | y == this.pixArray.length -1) {
+            edge = true;
+        }
+        return edge;
+    }
+
+    /** gx_calc()
+     * Calculate gx of a pixel
+     */
+    private short gx_calc(int[] pixel) {
+        short gx = (short) 0;
+        int[][] gxArr = {{1, 0, -1}, {2, 0, -2}, {1, 0, -1}};
+        int[][][] pixArray = this.pixArray;
+
+        return gx;
+    }
+
+    /** mirror() takes a position (x, y) for pixArray and creates a new array of pixels with mirror images
+     * @param x int position
+     * @param y int position
+     * @return a new pixArray for that position with top, left, bottom, right pixels filled
+     */
+    private int[] mirror(int x, int y) {
+        int[] mirrorImage = this.pixArray[x][y];
+        return mirrorImage;
+    }
+
+    private int[][][] neighboringPixels(int x, int y) {
+        int[][][] neighborMatrix = new int[3][3][3];
+        neighborMatrix[1][1] = this.pixArray[x][y];
+
+        for(int i=0;i<this.pixArray.length;i++){
+            for(int j=0;j<this.pixArray[i].length-1;j++){
+                try {
+                    // get right
+                    neighborMatrix[1][2] = pixArray[x][y+1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[1][2] = mirror(x, y);
+                }
+                try {
+                    // get left
+                    neighborMatrix[0][1] = pixArray[x][y-1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[0][1] = mirror(x, y);
+                }
+                try {
+                    // get top
+                    neighborMatrix[1][0] = pixArray[x-1][y];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[1][0] = mirror(x, y);
+
+                }
+                try {
+                    // get bottom
+                    neighborMatrix[2][1] = pixArray[x+1][y];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[2][1] = mirror(x, y);
+                }
+                try {
+                    // get right-top
+                    neighborMatrix[2][0] = pixArray[x-1][y+1];
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[2][0] = mirror(x, y);
+                }
+                try {
+                    // get right-bottom
+                    neighborMatrix[2][2] = pixArray[x+1][y+1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[2][2] = mirror(x, y);
+                }
+                try {
+                    // get left-top
+                    neighborMatrix[0][0] = pixArray[x-1][y-1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[0][0] = mirror(x, y);
+                }
+                try {
+                    // get left-bottom
+                    neighborMatrix[0][2] = pixArray[x+1][y-1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[0][2] = mirror(x, y);
+                }
+
+            }
+        }
+        return neighborMatrix;
+    }
+
+    /** gy_calc()
+     * Calculate gy of a pixel
+     */
+    private short gy_calc(int[] pixel) {
+        short gy = (short) 0;
+        int[][] gyArr = {{1, 2, 1}, {0, 0, 0}, {-1, -2, -1}};
+        int[][][] pixArray = this.pixArray;
+
+        return gy;
+    }
+
+
     /**
      * sobelEdges() applies the Sobel operator, identifying edges in "this"
      * image.  The Sobel operator computes a magnitude that represents how
@@ -408,6 +520,13 @@ public class PixImage {
         return true;
     }
 
+    private static void readArray(int[][][] t) {
+        for(int i=0;i<t.length-1;i++){
+            for(int j=0;j<t[i].length-1;j++){
+                System.out.println(t[i][j][0]);
+            }
+        }
+    }
     /**
      * main() runs a series of tests to ensure that the convolutions (box blur
      * and Sobel) are correct.
@@ -449,7 +568,16 @@ public class PixImage {
                 "Incorrect box blur (1 rep + 1 rep):\n" +
                         image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
 
-//        System.out.println("Testing edge detection on a 3x3 image.");
+        System.out.println("Testing edge detection on a 3x3 image.");
+        doTest(image1.edgeDetector(0, 0) == true, "Incorrect edge detection \n: " + image1.edgeDetector(0, 0));
+        doTest(image1.edgeDetector(2, 2) == true, "Incorrect edge detection \n: " + image1.edgeDetector(2, 2));
+        doTest(image1.edgeDetector(1, 1) == false, "Incorrect edge detection \n: " + image1.edgeDetector(1, 1));
+
+
+        System.out.println("Test neighboringPixels method.");
+        int[][][] t = image1.neighboringPixels(0, 0);
+        readArray(t);
+
 //        doTest(image1.sobelEdges().equals(
 //                        array2PixImage(new int[][] { { 104, 189, 180 },
 //                                { 160, 193, 157 },
