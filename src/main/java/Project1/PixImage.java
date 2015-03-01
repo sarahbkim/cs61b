@@ -388,12 +388,12 @@ public class PixImage {
         return neighborMatrix;
     }
 
-    /** g_calc()
+    /** gradient_vector()
      * Calculate gx or gy of a pixel and returns a pixel (r, g, b)
      */
-    private short[] g_calc(int x, int y, String xOry) {
+    private int[] gradient_vector(int x, int y, String xOry) {
         // initialize vars
-        short[] gPix = new short[3];
+        int[] gPix = new [3];
         int r, g, b;
         r = g = b = 0;
         int[][][] arr;
@@ -423,13 +423,18 @@ public class PixImage {
                 g += pixel[1] * arr[i][j][1];
                 b += pixel[2] * arr[i][j][2];
             }
-            gPix[0] = (short)r;
-            gPix[1] = (short)g;
-            gPix[2] = (short)b;
+            gPix[0] = r;
+            gPix[1] = g;
+            gPix[2] = b;
         }
         return gPix;
     }
 
+    private short pixelEnergy(int[] gx, int[] gy) {
+        int e = 0;
+        e += gx[0]^2 + gy[0]^2 + gx[1]^2 + gy[1]^2 + gx[2]^2 + gy[2]^2;
+        return (short)e;
+    }
 
     /**
      * sobelEdges() applies the Sobel operator, identifying edges in "this"
