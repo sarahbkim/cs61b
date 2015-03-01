@@ -196,71 +196,72 @@ public class PixImage {
         }
 
         PixImage blurred = new PixImage(this.height, this.width);
-        int[][][] blurred_arr = blurred.pixArray;
+        blurred.pixArray = this.pixArray; // start with a copy of original pixArray
 
         while(numIterations>0) {
+            int[][][] blurred_arr = new int[this.height][this.width][3];
             // iterate of each row of pixelArrs
-            for(int i=0;i<this.pixArray.length;i++) {
+            for(int i=0;i<blurred.pixArray.length;i++) {
                 // iterate each pixel arr
-                for(int j=0;j<this.pixArray[i].length;j++) {
-                    int[] pixel = this.pixArray[i][j];
+                for(int j=0;j<blurred.pixArray[i].length;j++) {
+                    int[] pixel = blurred.pixArray[i][j];
                     int neighborCount = 1;
                     int avgR = (int)pixel[0];
                     int avgG = (int)pixel[1];
                     int avgB = (int)pixel[2];
 
                     if(i - 1 >= 0) {
-                        int[] t = this.pixArray[i-1][j];
+                        int[] t = blurred.pixArray[i-1][j];
                         avgR += (int)t[0];
                         avgG += (int)t[1];
                         avgB += (int)t[2];
                         neighborCount++;
-                        if(j+1<this.pixArray[i][j].length) {
-                            int[] rtdiag = this.pixArray[i-1][j+1];
+                        if(j+1<blurred.pixArray[i][j].length) {
+                            int[] rtdiag = blurred.pixArray[i-1][j+1];
                             avgR += (int)rtdiag[0];
                             avgG += (int)rtdiag[1];
                             avgB += (int)rtdiag[2];
                             neighborCount++;
                         }
                         if(j-1>=0) {
-                            int[] ltdiag = this.pixArray[i-1][j-1];
+                            int[] ltdiag = blurred.pixArray[i-1][j-1];
                             avgR += (int)ltdiag[0];
                             avgG += (int)ltdiag[1];
                             avgB += (int)ltdiag[2];
                             neighborCount++;
                         }
                     }
-                    if(i+1<this.pixArray.length) {
-                        int[] b = this.pixArray[i+1][j];
+                    if(i+1<blurred.pixArray.length) {
+                        int[] b = blurred.pixArray[i+1][j];
                         avgR += (int)b[0];
                         avgG += (int)b[1];
                         avgB += (int)b[2];
                         neighborCount++;
 
-                        if(j+1<this.pixArray[i][j].length) {
-                            int[] rbdiag = this.pixArray[i+1][j+1];
+                        if(j+1<blurred.pixArray[i][j].length) {
+                            int[] rbdiag = blurred.pixArray[i+1][j+1];
                             avgR += (int)rbdiag[0];
                             avgG += (int)rbdiag[1];
                             avgB += (int)rbdiag[2];
                             neighborCount++;
                         }
                         if(j-1>=0) {
-                            int[] lbdiag = this.pixArray[i+1][j-1];
+                            int[] lbdiag = blurred.pixArray[i+1][j-1];
                             avgR += (int)lbdiag[0];
                             avgG += (int)lbdiag [1];
                             avgB += (int)lbdiag [2];
                             neighborCount++;
                         }
                     }
-                    if(j+1<this.pixArray.length) {
-                        int[] r = this.pixArray[i][j+1];
+                    if(j+1<blurred.pixArray.length) {
+                        int[] r = blurred.pixArray[i][j+1];
                         avgR += (int)r[0];
                         avgG += (int)r[1];
                         avgB += (int)r[2];
                         neighborCount++;
                     }
                     if(j-1>=0) {
-                        int[] l = this.pixArray[i][j-1];
+                        int[] l = blurred.pixArray[i][j-1];
                         avgR += (int)l[0];
                         avgG += (int)l[1];
                         avgB += (int)l[2];
