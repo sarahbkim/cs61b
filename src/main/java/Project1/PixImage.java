@@ -304,7 +304,6 @@ public class PixImage {
      */
     private static short mag2gray(long mag) {
         short intensity = (short) (30.0 * Math.log(1.0 + (double) mag) - 256.0);
-
         // Make sure the returned intensity is in the range 0...255, regardless of
         // the input value.
         if (intensity < 0) {
@@ -326,6 +325,13 @@ public class PixImage {
         return mirrorImage;
     }
 
+    /**
+     * neighboringPixels takes a position of a pixel and returns a matrix including itself,
+     * top, left, right, bottom, and diagonal pixel neighbors
+     * @param x
+     * @param y
+     * @return
+     */
     private int[][][] neighboringPixels(int x, int y) {
         int[][][] neighborMatrix = new int[3][3][3];
         neighborMatrix[1][1] = this.pixArray[x][y];
@@ -393,7 +399,7 @@ public class PixImage {
      */
     private int[] gradient_vector(int x, int y, String xOry) {
         // initialize vars
-        int[] gPix = new [3];
+        int[] gPix = new int[3];
         int r, g, b;
         r = g = b = 0;
         int[][][] arr;
@@ -420,8 +426,8 @@ public class PixImage {
             for(int j=0;j<m[i].length-1;j++){
                 int[] pixel = m[i][j];
                 r += pixel[0] * arr[i][j][0];
-                g += pixel[1] * arr[i][j][1];
-                b += pixel[2] * arr[i][j][2];
+                g += pixel[1] * arr[i][j][0];
+                b += pixel[2] * arr[i][j][0];
             }
             gPix[0] = r;
             gPix[1] = g;
@@ -430,10 +436,18 @@ public class PixImage {
         return gPix;
     }
 
-    private short pixelEnergy(int[] gx, int[] gy) {
+    /**
+     *
+     * @param gx an integer array, result of calling gradient_vector with 'x'
+     * @param gy an integer array, result of calling gradient_vector with 'y'
+     * @return
+     */
+    private long pixelEnergy(int[] gx, int[] gy) {
         int e = 0;
-        e += gx[0]^2 + gy[0]^2 + gx[1]^2 + gy[1]^2 + gx[2]^2 + gy[2]^2;
-        return (short)e;
+        e += Math.pow((double)gx[0], (double)2) + Math.pow((double)gy[0], (double)2) +
+                Math.pow((double)gx[1],(double)2) + Math.pow((double)gy[1], (double)2) +
+                Math.pow((double)gx[2], (double)2) + Math.pow((double)gy[2], (double)2);
+        return (long)e;
     }
 
     /**
@@ -453,11 +467,24 @@ public class PixImage {
      */
     public PixImage sobelEdges() {
         // Replace the following line with your solution.
-        return this;
-        // Don't forget to use the method mag2gray() above to convert energies to
-        // pixel intensities.
-    }
+        PixImage sobel = new PixImage(this.height, this.width);
+        sobel.pixArray = new int[this.height][this.width][3];
 
+        for(int i=0;i<sobel.pixArray.length-1;i++){
+            for(int j=0;j<sobel.pixArray[i].length-1;j++){
+                // calculate gradient vectors
+                int[] gx = gradient_vector(i, j, "x");
+                int[] gy = gradient_vector(i, j, "y");
+
+                // calculate energy
+                short e = mag2gray(pixelEnergy(gx, gy));
+
+                // set sobel's pixel array to energy
+                sobel.pixArray[i][j][0] = sobel.pixArray[i][j][1] = sobel.pixArray[i][j][2] = e;
+            }
+        }
+        return sobel;
+    }
 
     /**
      * TEST CODE:  YOU DO NOT NEED TO FILL IN ANY METHODS BELOW THIS POINT.
@@ -549,15 +576,10 @@ public class PixImage {
         doTest(image1.getWidth() == 3 && image1.getHeight() == 3,
                 "Incorrect image width and height.");
 
-        String x = image1.toString();
-        System.out.println(x);
-
 //        System.out.println("Testing setPixels");
 //        image1.setPixel(0, 2, (short) 10, (short) 30, (short) 225);
 //        doTest(image1.getBlue(0, 2) == (short)225 && image1.getRed(0, 2) == (short)10, "Incorrect setPixel value");
 
-        PixImage blurTest = image1.boxBlur(1);
-        blurTest.toString();
         System.out.println("Testing blurring on a 3x3 image.");
         doTest(image1.boxBlur(1).equals(
                         array2PixImage(new int[][] { { 40, 108, 155 },
@@ -573,22 +595,13 @@ public class PixImage {
                 "Incorrect box blur (1 rep + 1 rep):\n" +
                         image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
 
-        System.out.println("Testing edge detection on a 3x3 image.");
-        doTest(image1.edgeDetector(0, 0) == true, "Incorrect edge detection \n: " + image1.edgeDetector(0, 0));
-        doTest(image1.edgeDetector(2, 2) == true, "Incorrect edge detection \n: " + image1.edgeDetector(2, 2));
-        doTest(image1.edgeDetector(1, 1) == false, "Incorrect edge detection \n: " + image1.edgeDetector(1, 1));
+        doTest(image1.sobelEdges().equals(
+                        array2PixImage(new int[][] { { 104, 189, 180 },
+                                { 160, 193, 157 },
+                                { 166, 178, 96 } })),
+                "Incorrect Sobel:\n" + image1.sobelEdges());
 
 
-        System.out.println("Test neighboringPixels method.");
-        int[][][] t = image1.neighboringPixels(0, 0);
-        image1.gy_calc(1, 2);
-//        doTest(image1.sobelEdges().equals(
-//                        array2PixImage(new int[][] { { 104, 189, 180 },
-//                                { 160, 193, 157 },
-//                                { 166, 178, 96 } })),
-//                "Incorrect Sobel:\n" + image1.sobelEdges());
-//
-//
 //        PixImage image2 = array2PixImage(new int[][] { { 0, 100, 100 },
 //                { 0, 0, 100 } });
 //        System.out.println("Testing getWidth/getHeight on a 2x3 image.  " +
