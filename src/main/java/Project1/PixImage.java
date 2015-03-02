@@ -337,7 +337,7 @@ public class PixImage {
         neighborMatrix[1][1] = this.pixArray[x][y];
 
         for(int i=0;i<this.pixArray.length;i++){
-            for(int j=0;j<this.pixArray[i].length-1;j++){
+            for(int j=0;j<this.pixArray[i].length;j++){
                 try {
                     // get right
                     neighborMatrix[1][2] = pixArray[x][y+1];
@@ -422,8 +422,8 @@ public class PixImage {
 
         int[][][] m = neighboringPixels(x, y);
 
-        for(int i=0;i<m.length-1;i++){
-            for(int j=0;j<m[i].length-1;j++){
+        for(int i=0;i<m.length;i++){
+            for(int j=0;j<m[i].length;j++){
                 int[] pixel = m[i][j];
                 r += pixel[0] * arr[i][j][0];
                 g += pixel[1] * arr[i][j][0];
@@ -470,8 +470,8 @@ public class PixImage {
         PixImage sobel = new PixImage(this.height, this.width);
         sobel.pixArray = new int[this.height][this.width][3];
 
-        for(int i=0;i<sobel.pixArray.length-1;i++){
-            for(int j=0;j<sobel.pixArray[i].length-1;j++){
+        for(int i=0;i<sobel.pixArray.length;i++){
+            for(int j=0;j<sobel.pixArray[i].length;j++){
                 // calculate gradient vectors
                 int[] gx = gradient_vector(i, j, "x");
                 int[] gy = gradient_vector(i, j, "y");
