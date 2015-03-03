@@ -132,37 +132,37 @@ public class PixImage {
 
         this.pixArray[x][y] = newPixel;
     }
-//
-//    /**
-//     * toString() returns a String representation of this PixImage.
-//     *
-//     * This method isn't required, but it should be very useful to you when
-//     * you're debugging your code.  It's up to you how you represent a PixImage
-//     * as a String.
-//     *
-//     * @return a String representation of this PixImage.
-//     */
-//    public String toString() {
-//        // Replace the following line with your solution.
-//        String s;
-//        s = "[ \n";
-//        for(int i=0;i<pixArray.length;i++) {
-//            int[][] arr = pixArray[i];
-//            s += "[ ";
-//            for(int j=0; j<arr.length;j++) {
-//                int arr_y[] = arr[j];
-//                s += "[ ";
-//                for(int k=0;k<arr_y.length;k++) {
-//                    s += arr_y[k] + " ";
-//                }
-//                s += " ]";
-//            }
-//            s += " ]\n";
-//        }
-//        s += " ]";
-//        return s;
-//    }
-//
+
+    /**
+     * toString() returns a String representation of this PixImage.
+     *
+     * This method isn't required, but it should be very useful to you when
+     * you're debugging your code.  It's up to you how you represent a PixImage
+     * as a String.
+     *
+     * @return a String representation of this PixImage.
+     */
+    public String toString() {
+        // Replace the following line with your solution.
+        String s;
+        s = "[ \n";
+        for(int i=0;i<pixArray.length;i++) {
+            short[][] arr = pixArray[i];
+            s += "[ ";
+            for(int j=0; j<arr.length;j++) {
+                short arr_y[] = arr[j];
+                s += "[ ";
+                for(int k=0;k<arr_y.length;k++) {
+                    s += arr_y[k] + " ";
+                }
+                s += " ]";
+            }
+            s += " ]\n";
+        }
+        s += " ]";
+        return s;
+    }
+
     /**
      * boxBlur() returns a blurred version of "this" PixImage.
      *
@@ -337,26 +337,8 @@ public class PixImage {
         short[][][] neighborMatrix = new short[3][3][3];
         neighborMatrix[1][1] = this.pixArray[x][y];
 
-        for(int i=0;i<this.pixArray.length;i++){
-            for(int j=0;j<this.pixArray[i].length;j++){
-                try {
-                    // get right
-                    neighborMatrix[1][2] = pixArray[x][y+1];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[1][2] = mirror(x, y);
-                }
-                try {
-                    // get left
-                    neighborMatrix[0][1] = pixArray[x][y-1];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[0][1] = mirror(x, y);
-                }
-                try {
-                    // get top
-                    neighborMatrix[1][0] = pixArray[x-1][y];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[1][0] = mirror(x, y);
-                }
+        for(int i=0;i<this.pixArray.length-1;i++){
+            for(int j=0;j<this.pixArray[i].length-1;j++){
                 try {
                     // get bottom
                     neighborMatrix[2][1] = pixArray[x+1][y];
@@ -364,17 +346,34 @@ public class PixImage {
                     neighborMatrix[2][1] = mirror(x, y);
                 }
                 try {
-                    // get right-top
-                    neighborMatrix[2][0] = pixArray[x-1][y+1];
-
+                    // get left
+                    neighborMatrix[1][0] = pixArray[x][y-1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[2][0] = neighborMatrix[1][2];
+                    neighborMatrix[1][0] = mirror(x, y);
+                }
+                try {
+                    // get top
+                    neighborMatrix[0][1] = pixArray[x-1][y];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[0][1] = mirror(x, y);
+                }
+                try {
+                    // get right
+                    neighborMatrix[1][2] = pixArray[x][y+1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[1][2] = mirror(x, y);
+                }
+                try {
+                    // get left-bottom
+                    neighborMatrix[1][0] = pixArray[x][y-1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[1][0] = neighborMatrix[1][0];
                 }
                 try {
                     // get right-bottom
                     neighborMatrix[2][2] = pixArray[x+1][y+1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[2][2] = neighborMatrix[1][2];
+                    neighborMatrix[2][2] = neighborMatrix[2][1];
                 }
                 try {
                     // get left-top
@@ -383,10 +382,10 @@ public class PixImage {
                     neighborMatrix[0][0] = neighborMatrix[0][1];
                 }
                 try {
-                    // get left-bottom
-                    neighborMatrix[0][2] = pixArray[x+1][y-1];
+                    // get right-top
+                    neighborMatrix[0][2] = pixArray[x-1][y+1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[0][2] = neighborMatrix[2][1];
+                    neighborMatrix[0][2] = neighborMatrix[0][1];
                 }
 
             }
@@ -421,9 +420,9 @@ public class PixImage {
         }
 
         short[][][] m = neighboringPixels(x, y);
-
-        for(int i=0;i<m.length;i++){
-            for(int j=0;j<m[i].length;j++){
+        for(int i=0;i<m.length-1;i++){
+            for(int j=0;j<m[i].length-1;j++){
+                // System.out.println(m[i][j][0] + " at " + i + ", " + j);
                 r += (int)m[i][j][0] * arr[i][j][0];
                 g += (int)m[i][j][1] * arr[i][j][0];
                 b += (int)m[i][j][2] * arr[i][j][0];
@@ -435,62 +434,62 @@ public class PixImage {
         return gPix;
     }
 
-//    /**
-//     *
-//     * @param gx an integer array, result of calling gradient_vector with 'x'
-//     * @param gy an integer array, result of calling gradient_vector with 'y'
-//     * @return
-//     */
-//    private long pixelEnergy(int[] gx, int[] gy) {
-//        int e = 0;
-//        e += Math.pow((double)gx[0], (double)2) + Math.pow((double)gy[0], (double)2) +
-//                Math.pow((double)gx[1],(double)2) + Math.pow((double)gy[1], (double)2) +
-//                Math.pow((double)gx[2], (double)2) + Math.pow((double)gy[2], (double)2);
-//        return (long)e;
-//    }
-//
-//    /**
-//     * sobelEdges() applies the Sobel operator, identifying edges in "this"
-//     * image.  The Sobel operator computes a magnitude that represents how
-//     * strong the edge is.  We compute separate gradients for the red, blue, and
-//     * green components at each pixel, then sum the squares of the three
-//     * gradients at each pixel.  We convert the squared magnitude at each pixel
-//     * into a grayscale pixel intensity in the range 0...255 with the logarithmic
-//     * mapping encoded in mag2gray().  The output is a grayscale PixImage whose
-//     * pixel intensities reflect the strength of the edges.
-//     *
-//     * See http://en.wikipedia.org/wiki/Sobel_operator#Formulation for details.
-//     *
-//     * @return a grayscale PixImage representing the edges of the input image.
-//     * Whiter pixels represent stronger edges.
-//     */
-//    public PixImage sobelEdges() {
-//        // Replace the following line with your solution.
-//        PixImage sobel = new PixImage(this.height, this.width);
-//        sobel.pixArray = new int[this.height][this.width][3];
-//
-//        for(int i=0;i<sobel.pixArray.length;i++){
-//            for(int j=0;j<sobel.pixArray[i].length;j++){
-//                // calculate gradient vectors
-//                int[] gx = gradient_vector(i, j, "x");
-//                int[] gy = gradient_vector(i, j, "y");
-//
-//                // calculate energy
-//                short e = mag2gray(pixelEnergy(gx, gy));
-//
-//                // set sobel's pixel array to energy
-//                sobel.pixArray[i][j][0] = sobel.pixArray[i][j][1] = sobel.pixArray[i][j][2] = e;
-//            }
-//        }
-//        return sobel;
-//    }
-//
-//    /**
-//     * TEST CODE:  YOU DO NOT NEED TO FILL IN ANY METHODS BELOW THIS POINT.
-//     * You are welcome to add tests, though.  Methods below this point will not
-//     * be tested.  This is not the autograder, which will be provided separately.
-//     */
-//
+    /**
+     *
+     * @param gx an integer array, result of calling gradient_vector with 'x'
+     * @param gy an integer array, result of calling gradient_vector with 'y'
+     * @return
+     */
+    private long pixelEnergy(int[] gx, int[] gy) {
+        long e = 0;
+        e += Math.pow((double)gx[0], (double)2) + Math.pow((double)gy[0], (double)2) +
+                Math.pow((double)gx[1],(double)2) + Math.pow((double)gy[1], (double)2) +
+                Math.pow((double)gx[2], (double)2) + Math.pow((double)gy[2], (double)2);
+        return (long)e;
+    }
+
+    /**
+     * sobelEdges() applies the Sobel operator, identifying edges in "this"
+     * image.  The Sobel operator computes a magnitude that represents how
+     * strong the edge is.  We compute separate gradients for the red, blue, and
+     * green components at each pixel, then sum the squares of the three
+     * gradients at each pixel.  We convert the squared magnitude at each pixel
+     * into a grayscale pixel intensity in the range 0...255 with the logarithmic
+     * mapping encoded in mag2gray().  The output is a grayscale PixImage whose
+     * pixel intensities reflect the strength of the edges.
+     *
+     * See http://en.wikipedia.org/wiki/Sobel_operator#Formulation for details.
+     *
+     * @return a grayscale PixImage representing the edges of the input image.
+     * Whiter pixels represent stronger edges.
+     */
+    public PixImage sobelEdges() {
+        // Replace the following line with your solution.
+        PixImage sobel = new PixImage(this.height, this.width);
+        sobel.pixArray = new short[this.height][this.width][3];
+
+        for(int i=0;i<sobel.pixArray.length;i++){
+            for(int j=0;j<sobel.pixArray[i].length;j++){
+                // calculate gradient vectors
+                int[] gx = gradient_vector(i, j, "x");
+                int[] gy = gradient_vector(i, j, "y");
+
+                // calculate energy
+                short e = mag2gray(pixelEnergy(gx, gy));
+
+                // set sobel's pixel array to energy
+                sobel.pixArray[i][j][0] = sobel.pixArray[i][j][1] = sobel.pixArray[i][j][2] = e;
+            }
+        }
+        return sobel;
+    }
+
+    /**
+     * TEST CODE:  YOU DO NOT NEED TO FILL IN ANY METHODS BELOW THIS POINT.
+     * You are welcome to add tests, though.  Methods below this point will not
+     * be tested.  This is not the autograder, which will be provided separately.
+     */
+
 
     /**
      * doTest() checks whether the condition is true and prints the given error
@@ -596,14 +595,38 @@ public class PixImage {
                 "Incorrect box blur (1 rep + 1 rep):\n" +
                         image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
 
-        System.out.println("Testing gradient vector: ");
-        System.out.println(image1.gradient_vector(0, 0, "x"));
+        System.out.println("Testing neighboring pixels: ");
+        short[][][] l = image1.neighboringPixels(0, 0);
+        short[][][] a = new short[][][] {{{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+                                        {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+                                        {{30, 30, 30}, {30, 30, 30}, {120, 120, 120}}};
+        String p = "[";
+        for(int i=0;i<l.length;i++){
+            p += " [";
+            for(int j=0;j<l[i].length;j++){
+                p += " [";
+                for(int k=0;k<l[i][j].length;k++){
+                    p += l[i][j][k] + " ";
+                }
+                p += " ]";
+            }
+            p+= " ] \n";
+        }
+        System.out.println(p);
 
-//        doTest(image1.sobelEdges().equals(
-//                        array2PixImage(new int[][] { { 104, 189, 180 },
-//                                { 160, 193, 157 },
-//                                { 166, 178, 96 } })),
-//                "Incorrect Sobel:\n" + image1.sobelEdges());
+//        System.out.println("Testing gradient vector: ");
+//        System.out.println("red at (0, 0): " + image1.getRed(0, 0));
+//        int[] x = image1.gradient_vector(0, 0, "x");
+//
+//        for(int i=0;i<x.length;i++){
+//            System.out.println(x[i] + " should be -120");
+//        }
+
+        doTest(image1.sobelEdges().equals(
+                        array2PixImage(new int[][] { { 104, 189, 180 },
+                                { 160, 193, 157 },
+                                { 166, 178, 96 } })),
+                "Incorrect Sobel:\n" + image1.sobelEdges());
 
 
 //        System.out.println("Testing getWidth/getHeight on a 2x3 image.  " +
