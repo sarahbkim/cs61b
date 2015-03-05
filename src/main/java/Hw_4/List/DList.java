@@ -198,7 +198,7 @@ public class DList {
      */
     public void insertAfter(Object item, DListNode node) {
         if(node==null){return;};
-        DListNode newNode = new DListNode(item, node, node.next);
+        DListNode newNode = newNode(item, node, node.next);
         node.next.prev = newNode;
         node.next = newNode;
     }
