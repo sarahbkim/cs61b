@@ -65,7 +65,9 @@ public class LockDList extends DList {
 
 
     public void remove(DListNode node) {
-        super.remove(node);
+        if(((LockDListNode) node).locked==false){
+            super.remove(node);
+        }
     }
 
     public LockDListNode front() {
@@ -126,6 +128,10 @@ public class LockDList extends DList {
         return result + "]";
     }
 
+    public void lockNode(DListNode node){
+        ((LockDListNode) node).locked = true;
+    }
+
     public static void main(String[] args){
 
         LockDList l = new LockDList();
@@ -152,16 +158,17 @@ public class LockDList extends DList {
         l.insertAfter(3, b);
         String s = l.toString();
         System.out.println(s);
+
         DListNode r = l.back();
         l.remove(r);
         String s2 = l.toString();
-        System.out.println(s2);
+        System.out. println(s2);
 
-//
-//        l.insertBack(3);
-//        String s2 = l.toString();
-//        System.out.println(s2);
-//
+        l.lockNode(f);
+        l.remove(f);
+        String s3 = l.toString();
+        System.out.println(s3);
+
 
     }
 }
