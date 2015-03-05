@@ -30,4 +30,7 @@ public class DListNode {
         prev = p;
         next = n;
     }
+
+    DListNode() {
+    }
 }

@@ -1,0 +1,94 @@
+the "finally" keyword
+----------------------
+try {
+    statement x;
+    return 1;
+} catch (someException e) {
+    e.printStackTrace();
+    return 2;
+} finally {
+    // stuff i want to happen no matter what happens
+    f.close() // close a file
+}
+
+- if try statement starts to execute at all, then the finally
+clause will be executed no matter what
+- you can have try/catch clauses in finally clause and catch clauses
+- if there's an exception in the finally clause, this new exception
+    will replace the old one
+
+Exception constructors
+----------------------
+most throwables/exceptions have at least 2 constructors,
+one that takes no params, and one that takes string
+```
+class myException extends Exception {
+    public myException() { super(); }
+    public myException(String s) { super(s); };
+}
+```
+
+Error message in 's' parameter;
+- will be printed as part of error message OR
+- if you catch the exception and read it using the getMessage() method
+
+
+Field Shadowing
+---------------
+- something to avoid!
+- when doing inheritance, fields can be 'shadowed' in subclasses
+- different from overriding
+- if you have 2 fields same name and one in subclass and the other in superclass,
+    -> field determined by static type
+
+```
+class Super {
+    int x =2;
+    int f() { return 2; };
+}
+
+class Subclass extends Super {
+    int x = 4; // shadows Super.x;
+    int f() { return 4; }; // overrides Super.f;
+    void g() {
+        int i;
+        i = this.x; // 4
+        i = ((Super)this).x; // 2
+        i = super.x; // 2 (-- same as casting)
+    }
+}
+
+Subclass sub = new Subclass();
+Super supe = sub;
+int i;
+i = supe.x; // 2 -- b/c static type is super
+i = sub.x; // 4  -- b/c static type is subclass
+i = ((Super)sub).x // 2, b/c i cast as super
+i = ((Subclass)supe).x // 4 b/c i cast as subclass
+
+i = supe.f(); // dynamic type, -> 4;
+i = sub.f();  // dynamic type --> 4;
+
+
+```
+
+static methods follow same shadowing rules as fields!
+
+final methods and classes
+=========================
+final method -> cannot be overridden
+final class -> cannot be extended
+
+why declare method/class final? for speed, esp. for c compilers or if
+java gets complied into c
+
+simplified for
+=============
+int[] array = {1, 2, 3, 4, 5}
+for(int i: array) {
+    i // is each val in array
+    System.out.println(i);
+}
+// similar to ruby .each method
+
+Iterator.
