@@ -30,7 +30,7 @@ public class PixImage {
      */
     private int width;
     private int height;
-    private short[][][] pixArray;
+    private int[][][] pixArray;
 
 
 
@@ -47,7 +47,7 @@ public class PixImage {
         this.height = height;
 
         // need to create an array of width and height...
-        pixArray = new short[width][height][3];
+        pixArray = new int[height][width][3];
     }
 
     /**
@@ -125,7 +125,7 @@ public class PixImage {
             return;
         }
 
-        short[] newPixel = this.pixArray[x][y];
+        int[] newPixel = this.pixArray[x][y];
         newPixel[0] = red;
         newPixel[1] = green;
         newPixel[2] = blue;
@@ -147,10 +147,10 @@ public class PixImage {
         String s;
         s = "[ \n";
         for(int i=0;i<pixArray.length;i++) {
-            short[][] arr = pixArray[i];
+            int[][] arr = pixArray[i];
             s += "[ ";
             for(int j=0; j<arr.length;j++) {
-                short arr_y[] = arr[j];
+                int arr_y[] = arr[j];
                 s += "[ ";
                 for(int k=0;k<arr_y.length;k++) {
                     s += arr_y[k] + " ";
@@ -202,73 +202,72 @@ public class PixImage {
         blurred.pixArray = this.pixArray; // start with a copy of original pixArray
 
         while(numIterations>0) {
-            short[][][] blurred_arr = new short[this.height][this.width][3];
-
+            int[][][] blurred_arr = new int[this.height][this.width][3];
             // iterate of each row of pixelArrs
             for(int i=0;i<blurred.pixArray.length;i++) {
                 // iterate each pixel arr
                 for(int j=0;j<blurred.pixArray[i].length;j++) {
-                    short[] pixel = blurred.pixArray[i][j];
+                    int[] pixel = blurred.pixArray[i][j];
                     int neighborCount = 1;
-                    int avgR = pixel[0];
-                    int avgG = pixel[1];
-                    int avgB = pixel[2];
+                    int avgR = (int)pixel[0];
+                    int avgG = (int)pixel[1];
+                    int avgB = (int)pixel[2];
 
                     if(i - 1 >= 0) {
-                        short[] t = blurred.pixArray[i-1][j];
-                        avgR += t[0];
-                        avgG += t[1];
-                        avgB += t[2];
+                        int[] t = blurred.pixArray[i-1][j];
+                        avgR += (int)t[0];
+                        avgG += (int)t[1];
+                        avgB += (int)t[2];
                         neighborCount++;
                         if(j+1<blurred.pixArray[i][j].length) {
-                            short[] rtdiag = blurred.pixArray[i-1][j+1];
-                            avgR += rtdiag[0];
-                            avgG += rtdiag[1];
-                            avgB += rtdiag[2];
+                            int[] rtdiag = blurred.pixArray[i-1][j+1];
+                            avgR += (int)rtdiag[0];
+                            avgG += (int)rtdiag[1];
+                            avgB += (int)rtdiag[2];
                             neighborCount++;
                         }
                         if(j-1>=0) {
-                            short[] ltdiag = blurred.pixArray[i-1][j-1];
-                            avgR += ltdiag[0];
-                            avgG += ltdiag[1];
-                            avgB += ltdiag[2];
+                            int[] ltdiag = blurred.pixArray[i-1][j-1];
+                            avgR += (int)ltdiag[0];
+                            avgG += (int)ltdiag[1];
+                            avgB += (int)ltdiag[2];
                             neighborCount++;
                         }
                     }
                     if(i+1<blurred.pixArray.length) {
-                        short[] b = blurred.pixArray[i+1][j];
-                        avgR += b[0];
-                        avgG += b[1];
-                        avgB += b[2];
+                        int[] b = blurred.pixArray[i+1][j];
+                        avgR += (int)b[0];
+                        avgG += (int)b[1];
+                        avgB += (int)b[2];
                         neighborCount++;
 
                         if(j+1<blurred.pixArray[i][j].length) {
-                            short[] rbdiag = blurred.pixArray[i+1][j+1];
-                            avgR += rbdiag[0];
-                            avgG += rbdiag[1];
-                            avgB += rbdiag[2];
+                            int[] rbdiag = blurred.pixArray[i+1][j+1];
+                            avgR += (int)rbdiag[0];
+                            avgG += (int)rbdiag[1];
+                            avgB += (int)rbdiag[2];
                             neighborCount++;
                         }
                         if(j-1>=0) {
-                            short[] lbdiag = blurred.pixArray[i+1][j-1];
-                            avgR += lbdiag[0];
-                            avgG += lbdiag [1];
-                            avgB += lbdiag [2];
+                            int[] lbdiag = blurred.pixArray[i+1][j-1];
+                            avgR += (int)lbdiag[0];
+                            avgG += (int)lbdiag [1];
+                            avgB += (int)lbdiag [2];
                             neighborCount++;
                         }
                     }
                     if(j+1<blurred.pixArray.length) {
-                        short[] r = blurred.pixArray[i][j+1];
-                        avgR += r[0];
-                        avgG += r[1];
-                        avgB += r[2];
+                        int[] r = blurred.pixArray[i][j+1];
+                        avgR += (int)r[0];
+                        avgG += (int)r[1];
+                        avgB += (int)r[2];
                         neighborCount++;
                     }
                     if(j-1>=0) {
-                        short[] l = blurred.pixArray[i][j-1];
-                        avgR += l[0];
-                        avgG += l[1];
-                        avgB += l[2];
+                        int[] l = blurred.pixArray[i][j-1];
+                        avgR += (int)l[0];
+                        avgG += (int)l[1];
+                        avgB += (int)l[2];
                         neighborCount++;
                     }
 
@@ -278,7 +277,7 @@ public class PixImage {
                     avgB = avgB/neighborCount;
 
                     // need to figure out this part ...
-                    short[] blurredPixel = {(short)avgR, (short)avgG, (short)avgB};
+                    int[] blurredPixel = {avgR, avgG, avgB};
                     blurred_arr[i][j] = blurredPixel;
                 }
 
@@ -321,8 +320,8 @@ public class PixImage {
      * @param y int position
      * @return a new pixArray for that position with top, left, bottom, right pixels filled
      */
-    private short[] mirror(int x, int y) {
-        short[] mirrorImage = this.pixArray[x][y];
+    private int[] mirror(int x, int y) {
+        int[] mirrorImage = this.pixArray[x][y];
         return mirrorImage;
     }
 
@@ -333,30 +332,12 @@ public class PixImage {
      * @param y
      * @return
      */
-    private short[][][] neighboringPixels(int x, int y) {
-        short[][][] neighborMatrix = new short[3][3][3];
+    private int[][][] neighboringPixels(int x, int y) {
+        int[][][] neighborMatrix = new int[3][3][3];
         neighborMatrix[1][1] = this.pixArray[x][y];
 
-        for(int i=0;i<this.pixArray.length-1;i++){
-            for(int j=0;j<this.pixArray[i].length-1;j++){
-                try {
-                    // get bottom
-                    neighborMatrix[2][1] = pixArray[x+1][y];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[2][1] = mirror(x, y);
-                }
-                try {
-                    // get left
-                    neighborMatrix[1][0] = pixArray[x][y-1];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[1][0] = mirror(x, y);
-                }
-                try {
-                    // get top
-                    neighborMatrix[0][1] = pixArray[x-1][y];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[0][1] = mirror(x, y);
-                }
+        for(int i=0;i<this.pixArray.length;i++){
+            for(int j=0;j<this.pixArray[i].length;j++){
                 try {
                     // get right
                     neighborMatrix[1][2] = pixArray[x][y+1];
@@ -364,16 +345,36 @@ public class PixImage {
                     neighborMatrix[1][2] = mirror(x, y);
                 }
                 try {
-                    // get left-bottom
-                    neighborMatrix[1][0] = pixArray[x][y-1];
+                    // get left
+                    neighborMatrix[0][1] = pixArray[x][y-1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[1][0] = neighborMatrix[1][0];
+                    neighborMatrix[0][1] = mirror(x, y);
+                }
+                try {
+                    // get top
+                    neighborMatrix[1][0] = pixArray[x-1][y];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[1][0] = mirror(x, y);
+
+                }
+                try {
+                    // get bottom
+                    neighborMatrix[2][1] = pixArray[x+1][y];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[2][1] = mirror(x, y);
+                }
+                try {
+                    // get right-top
+                    neighborMatrix[2][0] = pixArray[x-1][y+1];
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    neighborMatrix[2][0] = neighborMatrix[1][2];
                 }
                 try {
                     // get right-bottom
                     neighborMatrix[2][2] = pixArray[x+1][y+1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[2][2] = neighborMatrix[2][1];
+                    neighborMatrix[2][2] = neighborMatrix[1][2];
                 }
                 try {
                     // get left-top
@@ -382,10 +383,10 @@ public class PixImage {
                     neighborMatrix[0][0] = neighborMatrix[0][1];
                 }
                 try {
-                    // get right-top
-                    neighborMatrix[0][2] = pixArray[x-1][y+1];
+                    // get left-bottom
+                    neighborMatrix[0][2] = pixArray[x+1][y-1];
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    neighborMatrix[0][2] = neighborMatrix[0][1];
+                    neighborMatrix[0][2] = neighborMatrix[2][1];
                 }
 
             }
@@ -419,13 +420,14 @@ public class PixImage {
             arr = gyArr;
         }
 
-        short[][][] m = neighboringPixels(x, y);
-        for(int i=0;i<m.length-1;i++){
-            for(int j=0;j<m[i].length-1;j++){
-                // System.out.println(m[i][j][0] + " at " + i + ", " + j);
-                r += (int)m[i][j][0] * arr[i][j][0];
-                g += (int)m[i][j][1] * arr[i][j][0];
-                b += (int)m[i][j][2] * arr[i][j][0];
+        int[][][] m = neighboringPixels(x, y);
+
+        for(int i=0;i<m.length;i++){
+            for(int j=0;j<m[i].length;j++){
+                int[] pixel = m[i][j];
+                r += pixel[0] * arr[i][j][0];
+                g += pixel[1] * arr[i][j][0];
+                b += pixel[2] * arr[i][j][0];
             }
             gPix[0] = r;
             gPix[1] = g;
@@ -441,7 +443,7 @@ public class PixImage {
      * @return
      */
     private long pixelEnergy(int[] gx, int[] gy) {
-        long e = 0;
+        int e = 0;
         e += Math.pow((double)gx[0], (double)2) + Math.pow((double)gy[0], (double)2) +
                 Math.pow((double)gx[1],(double)2) + Math.pow((double)gy[1], (double)2) +
                 Math.pow((double)gx[2], (double)2) + Math.pow((double)gy[2], (double)2);
@@ -466,7 +468,7 @@ public class PixImage {
     public PixImage sobelEdges() {
         // Replace the following line with your solution.
         PixImage sobel = new PixImage(this.height, this.width);
-        sobel.pixArray = new short[this.height][this.width][3];
+        sobel.pixArray = new int[this.height][this.width][3];
 
         for(int i=0;i<sobel.pixArray.length;i++){
             for(int j=0;j<sobel.pixArray[i].length;j++){
@@ -573,10 +575,8 @@ public class PixImage {
         System.out.print(image1);
         doTest(image1.getWidth() == 3 && image1.getHeight() == 3,
                 "Incorrect image width and height.");
-        PixImage image2 = array2PixImage(new int[][] { { 0, 100, 100 },
-                { 0, 0, 100 } });
 
-        System.out.println("Testing setPixels");
+//        System.out.println("Testing setPixels");
 //        image1.setPixel(0, 2, (short) 10, (short) 30, (short) 225);
 //        doTest(image1.getBlue(0, 2) == (short)225 && image1.getRed(0, 2) == (short)10, "Incorrect setPixel value");
 
@@ -595,33 +595,6 @@ public class PixImage {
                 "Incorrect box blur (1 rep + 1 rep):\n" +
                         image1.boxBlur(2) + image1.boxBlur(1).boxBlur(1));
 
-        System.out.println("Testing neighboring pixels: ");
-        short[][][] l = image1.neighboringPixels(0, 0);
-        short[][][] a = new short[][][] {{{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-                                        {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-                                        {{30, 30, 30}, {30, 30, 30}, {120, 120, 120}}};
-        String p = "[";
-        for(int i=0;i<l.length;i++){
-            p += " [";
-            for(int j=0;j<l[i].length;j++){
-                p += " [";
-                for(int k=0;k<l[i][j].length;k++){
-                    p += l[i][j][k] + " ";
-                }
-                p += " ]";
-            }
-            p+= " ] \n";
-        }
-        System.out.println(p);
-
-//        System.out.println("Testing gradient vector: ");
-//        System.out.println("red at (0, 0): " + image1.getRed(0, 0));
-//        int[] x = image1.gradient_vector(0, 0, "x");
-//
-//        for(int i=0;i<x.length;i++){
-//            System.out.println(x[i] + " should be -120");
-//        }
-
         doTest(image1.sobelEdges().equals(
                         array2PixImage(new int[][] { { 104, 189, 180 },
                                 { 160, 193, 157 },
@@ -629,22 +602,24 @@ public class PixImage {
                 "Incorrect Sobel:\n" + image1.sobelEdges());
 
 
-//        System.out.println("Testing getWidth/getHeight on a 2x3 image.  " +
-//                "Input image:");
-//        System.out.print(image2);
-//        doTest(image2.getWidth() == 2 && image2.getHeight() == 3,
-//                "Incorrect image width and height.");
-//
-//        System.out.println("Testing blurring on a 2x3 image.");
-//        doTest(image2.boxBlur(1).equals(
-//                        array2PixImage(new int[][] { { 25, 50, 75 },
-//                                { 25, 50, 75 } })),
-//                "Incorrect box blur (1 rep):\n" + image2.boxBlur(1));
-//
-//        System.out.println("Testing edge detection on a 2x3 image.");
-//        doTest(image2.sobelEdges().equals(
-//                        array2PixImage(new int[][] { { 122, 143, 74 },
-//                                { 74, 143, 122 } })),
-//                "Incorrect Sobel:\n" + image2.sobelEdges());
+        PixImage image2 = array2PixImage(new int[][] { { 0, 100, 100 },
+                { 0, 0, 100 } });
+        System.out.println("Testing getWidth/getHeight on a 2x3 image.  " +
+                "Input image:");
+        System.out.print(image2);
+        doTest(image2.getWidth() == 2 && image2.getHeight() == 3,
+                "Incorrect image width and height.");
+
+        System.out.println("Testing blurring on a 2x3 image.");
+        doTest(image2.boxBlur(1).equals(
+                        array2PixImage(new int[][] { { 25, 50, 75 },
+                                { 25, 50, 75 } })),
+                "Incorrect box blur (1 rep):\n" + image2.boxBlur(1));
+
+        System.out.println("Testing edge detection on a 2x3 image.");
+        doTest(image2.sobelEdges().equals(
+                        array2PixImage(new int[][] { { 122, 143, 74 },
+                                { 74, 143, 122 } })),
+                "Incorrect Sobel:\n" + image2.sobelEdges());
     }
 }
