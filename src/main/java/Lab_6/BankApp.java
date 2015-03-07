@@ -3,7 +3,6 @@ package main.java.Lab_6;
 /* BankApp.java */
 
 import java.io.*;
-import main.java.Lab_6.sortedlist.*;
 
 /**
  *  A bank application.  Allows a user to create and manipulate

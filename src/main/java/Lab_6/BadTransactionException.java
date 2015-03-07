@@ -1,4 +1,4 @@
-package main.java.Lab_6.sortedlist;
+package main.java.Lab_6;
 
 /**
  * Created by sarahbkim on 3/6/15.
