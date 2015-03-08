@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6417fa47-1028-42e5-8202-ec60f030d6f1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/DList.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/DListNode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/InvalidNodeException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/List.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/ListNode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/SList.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/SListNode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/Set.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Hw_4/List/DList.java" afterPath="$PROJECT_DIR$/src/main/java/Hw_4/List/DList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Hw_5/List/DList.java" afterPath="$PROJECT_DIR$/src/main/java/Hw_5/List/DList.java" />
     </list>
     <ignored path="cs61b.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,8 +42,8 @@
       <file leaf-file-name="DList.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Hw_5/List/DList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43867925" vertical-offset="4302" max-vertical-offset="4726">
-              <caret line="268" column="49" selection-start-line="268" selection-start-column="49" selection-end-line="268" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.67002517" vertical-offset="1144" max-vertical-offset="4155">
+              <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -1157,8 +1148,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Hw_5/List/DList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43867925" vertical-offset="4302" max-vertical-offset="4726">
-          <caret line="268" column="49" selection-start-line="268" selection-start-column="49" selection-end-line="268" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.67002517" vertical-offset="1144" max-vertical-offset="4155">
+          <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
           <folding />
         </state>
       </provider>

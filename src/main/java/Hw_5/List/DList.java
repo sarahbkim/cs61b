@@ -95,15 +95,13 @@ public class DList extends List {
      **/
     public void insertBack(Object item) {
         // Your solution here.  Similar to Homework 4, but now you need to specify
-        DListNode n = newNode(item, this, head.prev, head);
+        DListNode n = newNode(item, this, head.prev, head.prev.next);
+        head.prev.next = n;
+        head.prev = n;
         if(size==0) {
             head.next = n;
-        } else {
-            head.prev.next = n;
         }
-        head.prev = n;
         size++;
-        System.out.println("insertBack! " + n.item + n.prev.item + n.next.item + n.prev.next.item + n.next.next.item);
     }
 
     /**
@@ -226,6 +224,7 @@ public class DList extends List {
         l.insertFront(new Integer(3));
         l.insertFront(new Integer(2));
         l.insertFront(new Integer(1));
+        l.insertBack(new Integer(4));
         System.out.println("l is a list of 3 elements: " + l);
         try {
             ListNode n;
