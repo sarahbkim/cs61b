@@ -3,12 +3,18 @@ package main.java.Hw_5;
 /* Set.java */
 
 import main.java.Hw_5.List.*;
+import org.omg.CORBA.DynAnyPackage.Invalid;
+
+import java.util.Comparator;
+
 /**
  *  A Set is a collection of Comparable elements stored in sorted order.
  *  Duplicate elements are not permitted in a Set.
  **/
-public class Set {
+public class Set{
   /* Fill in the data fields here. */
+    List setItems;
+    int size;
 
     /**
      * Set ADT invariants:
@@ -25,6 +31,8 @@ public class Set {
      **/
     public Set() {
         // Your solution here.
+        setItems = new SList();
+        size = 0;
     }
 
     /**
@@ -34,7 +42,7 @@ public class Set {
      **/
     public int cardinality() {
         // Replace the following line with your solution.
-        return 0;
+        return size;
     }
 
     /**
@@ -46,8 +54,43 @@ public class Set {
      *  Performance:  runs in O(this.cardinality()) time.
      **/
     public void insert(Comparable c) {
-        // Your solution here.
+        // if it's an empty set, just add the element
+        if(size==0){
+            setItems.insertFront(c);
+            size++;
+        }
+
+        // if it's not an empty set...
+        ListNode curr = setItems.front();
+
+        while(curr!=null) {
+            // check if it's unique
+            if(curr.compareTo(c)==0) {
+                break;
+            }
+            // if curr is less than item, keep going
+            // if curr is greater than item, insertBefore that item
+            if(curr.compareTo(c)>0) {
+                try {
+                    curr.insertBefore(c);
+                    size++;
+                    break;
+                } catch (InvalidNodeException e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            try {
+                curr = curr.next();
+            } catch (InvalidNodeException e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
+
 
     /**
      *  union() modifies this Set so that it contains all the elements it
@@ -102,7 +145,8 @@ public class Set {
      **/
     public String toString() {
         // Replace the following line with your solution.
-        return "";
+        String s = setItems.toString();
+        return s;
     }
 
     public static void main(String[] argv) {
@@ -110,7 +154,7 @@ public class Set {
         s.insert(new Integer(3));
         s.insert(new Integer(4));
         s.insert(new Integer(3));
-        System.out.println("Set s = " + s);
+        System.out.println("Set s = " + s.toString());
 
         Set s2 = new Set();
         s2.insert(new Integer(4));
@@ -122,6 +166,7 @@ public class Set {
         s3.insert(new Integer(5));
         s3.insert(new Integer(3));
         s3.insert(new Integer(8));
+        // [3 5]
         System.out.println("Set s3 = " + s3);
 
         s.union(s2);
@@ -133,4 +178,6 @@ public class Set {
         System.out.println("s.cardinality() = " + s.cardinality());
         // You may want to add more (ungraded) test code here.
     }
+
+
 }

@@ -124,6 +124,12 @@ public class SListNode extends ListNode {
         myList.size++;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        int comparison = (Integer)this.item - (Integer)o;
+        return comparison;
+    }
+
     /**
      *  remove() removes this node from its SList.  If this node is invalid,
      *  throws an exception.

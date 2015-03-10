@@ -8,7 +8,7 @@ package main.java.Hw_5.List;
  *  DO NOT CHANGE THIS FILE.
  **/
 
-public abstract class ListNode {
+public abstract class ListNode implements Comparable{
 
     /**
      *  item references the item stored in the current node.

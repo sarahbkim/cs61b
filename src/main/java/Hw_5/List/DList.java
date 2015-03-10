@@ -222,9 +222,8 @@ public class DList extends List {
         testEmpty();
         List l = new DList();
         l.insertFront(new Integer(3));
-        l.insertFront(new Integer(2));
+        l.insertBack(new Integer(2));
         l.insertFront(new Integer(1));
-        l.insertBack(new Integer(4));
         System.out.println("l is a list of 3 elements: " + l);
         try {
             ListNode n;

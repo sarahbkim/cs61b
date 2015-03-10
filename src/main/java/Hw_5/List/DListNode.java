@@ -152,4 +152,9 @@ public class DListNode extends ListNode {
         prev = null;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        int comparison = (Integer)this.item - (Integer)((DListNode)o).item;
+        return comparison;
+    }
 }
