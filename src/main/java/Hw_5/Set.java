@@ -54,39 +54,33 @@ public class Set{
      *  Performance:  runs in O(this.cardinality()) time.
      **/
     public void insert(Comparable c) {
-        // if it's an empty set, just add the element
+        // if it's not an empty set...
+
         if(size==0){
             setItems.insertFront(c);
             size++;
-        }
-
-        // if it's not an empty set...
-        ListNode curr = setItems.front();
-
-        while(curr!=null) {
-            // check if it's unique
-            if(curr.compareTo(c)==0) {
-                break;
-            }
-            // if curr is less than item, keep going
-            // if curr is greater than item, insertBefore that item
-            if(curr.compareTo(c)>0) {
+        } else {
+            ListNode curr = setItems.front();
+            while(curr.isValidNode()){
                 try {
-                    curr.insertBefore(c);
-                    size++;
-                    break;
-                } catch (InvalidNodeException e){
+                    // check if unique
+                    if(curr.compareTo(c)==0) { break; }
+
+                    // check if curr is larger c
+                    if(curr.compareTo(c)>0) {
+                        setItems.insertFront(c);
+                        size++;
+                        break;
+                    } else if (curr.compareTo(c)<0 && !(curr.next().isValidNode())){
+                        setItems.insertBack(c);
+                        size++;
+                        break;
+                    }
+                    curr = curr.next();
+                } catch (InvalidNodeException e) {
                     e.printStackTrace();
                 }
-
             }
-
-            try {
-                curr = curr.next();
-            } catch (InvalidNodeException e){
-                e.printStackTrace();
-            }
-
         }
 
     }
