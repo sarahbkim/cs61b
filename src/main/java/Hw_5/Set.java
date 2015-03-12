@@ -4,6 +4,7 @@ package main.java.Hw_5;
 
 import main.java.Hw_5.List.*;
 import org.omg.CORBA.DynAnyPackage.Invalid;
+import org.omg.CORBA.INV_FLAG;
 
 import java.util.Comparator;
 
@@ -102,7 +103,55 @@ public class Set{
      *  DO NOT ATTEMPT TO COPY ELEMENTS; just copy _references_ to them.
      **/
     public void union(Set s) {
-        // Your solution here.
+        ListNode head1 = this.setItems.front();
+        ListNode head2 = s.setItems.front();
+
+        while(head1.isValidNode() && head2.isValidNode()){
+            try{
+                if(head1.compareTo(head2.item())<0){
+                    if(head1.next().isValidNode()==false){
+                        head1.insertAfter(head2.item());
+                    } else if (head1.next().compareTo(head2.item())!=0){
+                        head1.insertAfter(head2.item());
+                    }
+                    head1 = head1.next();
+                } else if(head1.compareTo(head2.item())>0){
+                    if(head1.prev().isValidNode()==false){
+                        head1.insertBefore(head2.item());
+                    } else if(head1.prev().compareTo(head2.item())!=0){
+                        head1.insertBefore(head2.item());
+                    }
+                    head2 = head2.next();
+                } else {
+                    if(head1.next().isValidNode()==false){
+                        System.out.println("false");
+                        head2 = head2.next();
+                        while(head2.isValidNode()){
+                            head1.insertAfter(head2.item());
+                            head2 = head2.next();
+                        }
+                        break;
+                    }
+                    if(head2.next().isValidNode()==false){
+                        head1 = head1.next();
+                        break;
+                    } else {
+                        head1 = head1.next();
+                        head2 = head2.next();
+                    }
+
+                }
+// 3 4 - 3 5 8 (h - 3 - 3)
+// 3 4 - 3 5 8 (h - 4 - 5)
+// 3 4 5 - 3 5 8 (h - 5 - 5 )
+//
+
+
+
+            } catch (InvalidNodeException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -148,6 +197,7 @@ public class Set{
         s.insert(new Integer(3));
         s.insert(new Integer(4));
         s.insert(new Integer(3));
+
         System.out.println("Set s = " + s.toString());
 
         Set s2 = new Set();
@@ -160,16 +210,34 @@ public class Set{
         s3.insert(new Integer(5));
         s3.insert(new Integer(3));
         s3.insert(new Integer(8));
-        // [3 5]
-        System.out.println("Set s3 = " + s3);
 
+        Set s4 = new Set();
+        s4.insert(new Integer(2));
+        s4.insert(new Integer(3));
+
+        System.out.println("Set s3 = " + s3.toString());
+        System.out.println("Set s4 = " + s4.toString());
+
+        s.union(s4);
+        System.out.println("After s.union(s4), s = " + s + " which should be: [2, 3, 4]");
+
+        s4.union(s);
+        System.out.println("After s4.union(s), s4 = " + s4 + " which should be: [2, 3, 4]");
+
+        s2.union(s);
+        System.out.println("After s2.union(s), s2 = " + s2 + " which should be: [2, 3, 4, 5]");
         s.union(s2);
-        System.out.println("After s.union(s2), s = " + s);
+        System.out.println("After s.union(s2), s = " + s + " which should be: [2, 3, 4, 5]");
 
-        s.intersect(s3);
-        System.out.println("After s.intersect(s3), s = " + s);
+        s.union(s3);
+        System.out.println("After s.union(s3), s = " + s + " which should be: [2, 3, 4, 5, 8]" );
+        s3.union(s);
+        System.out.println("After s3.union(s), s3 = " + s3 + " which should be: [2, 3, 4, 5, 8]" );
 
-        System.out.println("s.cardinality() = " + s.cardinality());
+//        s.intersect(s3);
+//        System.out.println("After s.intersect(s3), s = " + s);
+//
+//        System.out.println("s.cardinality() = " + s.cardinality());
         // You may want to add more (ungraded) test code here.
     }
 

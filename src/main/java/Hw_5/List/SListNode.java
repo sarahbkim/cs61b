@@ -126,7 +126,7 @@ public class SListNode extends ListNode {
 
     @Override
     public int compareTo(Object o) {
-        int comparison = (Integer)this.item - (Integer)o;
+        int comparison = (Integer)(this.item) - (Integer)o;
         return comparison;
     }
 
