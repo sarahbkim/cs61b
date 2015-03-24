@@ -2,6 +2,8 @@ package main.java.Hw_5.List;
 
 /* SList.java */
 
+import java.util.HashMap;
+
 /**
  *  A SList is a mutable singly-linked list ADT.  Its implementation employs
  *  a tail reference.
@@ -126,6 +128,106 @@ public class SList extends List {
     }
 
     /**
+     * removes duplicates from an Slist
+     */
+    public void removeDupes() {
+        HashMap<Object, Object> x = new HashMap<Object, Object>();
+        SListNode prev = null;
+        SListNode curr = head;
+        while(curr!=null){
+
+            // if object exists in hash map, if do, move prev pointer to curr.next
+            if(x.get(curr.item)!=null){
+                prev.next = curr.next;
+            } else if(x.get(curr.item)==null) {  // else add it to the hashtable
+                x.put(curr.item, curr.item);
+                prev = curr;
+            }
+            curr = curr.next;
+        }
+    }
+
+    /**
+     * remove dupes no buffer - uses runner
+     */
+    public void removeDupesNoBuffer() {
+        SListNode curr = head;
+        while(curr!=null){
+            SListNode runner = curr;
+            while(runner.next!=null){
+                if(runner.next.item.equals(curr.item)){
+                    runner.next = runner.next.next;
+                } else {
+                    runner = runner.next;
+                }
+            }
+            curr = curr.next;
+        }
+    }
+
+    /**
+     * find nth to last element of a list
+     */
+    public SListNode nthToLast(int n){
+        if(n<0 || n > this.size){
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // calculate actual position
+        int pos = this.size - n - 1;
+        System.out.println("position: " + pos);
+        SListNode start = head;
+        // loop the list
+        for(int i=1;i<pos;i++){
+            start = start.next;
+        }
+        return start;
+    }
+
+
+    /**
+     * nth to last element if no size field -- recusively
+     */
+    public SListNode nthToLastRecursive(int n, SListNode head, IntWrapper i) {
+        if(head==null){
+            return null;
+        }
+
+        SListNode node = nthToLastRecursive(n, head.next, i);
+        i.value = i.value + 1;
+
+        if(i.value==n) {
+            return head;
+        }
+
+        return node;
+    }
+
+    public SListNode nthToLastIter(int n, SListNode head) {
+        SListNode p1 = head;
+        SListNode p2 = head;
+
+        // move the p2 node n-1 elements
+        for(int i=0;i<n-1;i++){
+            if(p2==null){
+                return null;
+            }
+            p2 = p2.next;
+        }
+
+        if(p2==null){
+            return null;
+        }
+
+        // move p1 and p2 together
+        while(p2.next!=null){
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p1;
+    }
+
+    /**
      *  toString() returns a String representation of this SList.
      *
      *  @return a String representation of this SList.
@@ -213,49 +315,60 @@ public class SList extends List {
         l.insertFront(new Integer(3));
         l.insertFront(new Integer(2));
         l.insertFront(new Integer(1));
-        System.out.println("l is a list of 3 elements: " + l);
-        try {
-            ListNode n;
-            int i = 1;
-            for (n = l.front(); n.isValidNode(); n = n.next()) {
-                System.out.println("n.item() should be " + i + ": " + n.item());
-                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
-                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
-                i++;
-            }
-            System.out.println("After doubling all elements of l: " + l);
-            testInvalidNode(n);
+        l.insertFront(new Integer(3));
+        l.insertFront(new Integer(2));
+        l.insertBack(new Integer(5));
+        System.out.println("l is a list of 6 elements: " + l);
 
-            i = 6;
-            for (n = l.back(); n.isValidNode(); n = n.prev()) {
-                System.out.println("n.item() should be " + i + ": " + n.item());
-                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
-                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
-                i = i - 2;
-            }
-            System.out.println("After doubling all elements of l again: " + l);
-            testInvalidNode(n);
-
-            n = l.front().next();
-            System.out.println("Removing middle element (8) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-            n = l.back();
-            System.out.println("Removing end element (12) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-
-            n = l.front();
-            System.out.println("Removing first element (4) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-        } catch (InvalidNodeException lbe) {
-            System.err.println ("Caught InvalidNodeException that should not happen."
-            );
-            System.err.println ("Aborting the testing code.");
-        }
+        ((SList)l).removeDupesNoBuffer();
+        IntWrapper i = new IntWrapper();
+        System.out.println("l is a list of 4 elements: " + l);
+        SListNode x = ((SList) l).nthToLastRecursive(3, ((SList) l).head, i);
+        SListNode y = ((SList) l).nthToLastIter(3, ((SList)l).head);
+        System.out.println(x.item);
+        System.out.println(y.item);
+//        try {
+//            ListNode n;
+//            int i = 1;
+//            for (n = l.front(); n.isValidNode(); n = n.next()) {
+//                System.out.println("n.item() should be " + i + ": " + n.item());
+//                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
+//                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
+//                i++;
+//            }
+//            System.out.println("After doubling all elements of l: " + l);
+//            testInvalidNode(n);
+//
+//            i = 6;
+//            for (n = l.back(); n.isValidNode(); n = n.prev()) {
+//                System.out.println("n.item() should be " + i + ": " + n.item());
+//                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
+//                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
+//                i = i - 2;
+//            }
+//            System.out.println("After doubling all elements of l again: " + l);
+//            testInvalidNode(n);
+//
+//            n = l.front().next();
+//            System.out.println("Removing middle element (8) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//            n = l.back();
+//            System.out.println("Removing end element (12) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//
+//            n = l.front();
+//            System.out.println("Removing first element (4) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//        } catch (InvalidNodeException lbe) {
+//            System.err.println ("Caught InvalidNodeException that should not happen."
+//            );
+//            System.err.println ("Aborting the testing code.");
+//        }
     }
 }

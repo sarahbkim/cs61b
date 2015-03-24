@@ -114,6 +114,7 @@ public class Set{
                     } else if (head1.next().compareTo(head2.item())!=0){
                         head1.insertAfter(head2.item());
                     }
+                    size++;
                     head1 = head1.next();
                 } else if(head1.compareTo(head2.item())>0){
                     if(head1.prev().isValidNode()==false){
@@ -122,13 +123,14 @@ public class Set{
                         head1.insertBefore(head2.item());
                     }
                     head2 = head2.next();
+                    size++;
                 } else {
                     if(head1.next().isValidNode()==false){
-                        System.out.println("false");
                         head2 = head2.next();
                         while(head2.isValidNode()){
                             head1.insertAfter(head2.item());
                             head2 = head2.next();
+                            size++;
                         }
                         break;
                     }
@@ -141,12 +143,6 @@ public class Set{
                     }
 
                 }
-// 3 4 - 3 5 8 (h - 3 - 3)
-// 3 4 - 3 5 8 (h - 4 - 5)
-// 3 4 5 - 3 5 8 (h - 5 - 5 )
-//
-
-
 
             } catch (InvalidNodeException e){
                 e.printStackTrace();
@@ -169,6 +165,26 @@ public class Set{
      **/
     public void intersect(Set s) {
         // Your solution here.
+        ListNode h1 = this.setItems.front();
+        ListNode h2 = s.setItems.front();
+        while (h1.isValidNode() && h2.isValidNode()) {
+            try {
+                if (h1.item().equals(h2.item())) {
+                    // just move the pointers
+                    h2 = h2.next();
+                    h1 = h1.next();
+                } else if ((Integer) h1.item() < (Integer) h2.item()) {
+                    ListNode temp = h1;
+                    h1 = h1.next();
+                    temp.remove();
+                    size--;
+                } else if ((Integer) h1.item() > (Integer) h2.item()) {
+                    h2 = h2.next();
+                }
+            } catch (InvalidNodeException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -190,55 +206,6 @@ public class Set{
         // Replace the following line with your solution.
         String s = setItems.toString();
         return s;
-    }
-
-    public static void main(String[] argv) {
-        Set s = new Set();
-        s.insert(new Integer(3));
-        s.insert(new Integer(4));
-        s.insert(new Integer(3));
-
-        System.out.println("Set s = " + s.toString());
-
-        Set s2 = new Set();
-        s2.insert(new Integer(4));
-        s2.insert(new Integer(5));
-        s2.insert(new Integer(5));
-        System.out.println("Set s2 = " + s2);
-
-        Set s3 = new Set();
-        s3.insert(new Integer(5));
-        s3.insert(new Integer(3));
-        s3.insert(new Integer(8));
-
-        Set s4 = new Set();
-        s4.insert(new Integer(2));
-        s4.insert(new Integer(3));
-
-        System.out.println("Set s3 = " + s3.toString());
-        System.out.println("Set s4 = " + s4.toString());
-
-        s.union(s4);
-        System.out.println("After s.union(s4), s = " + s + " which should be: [2, 3, 4]");
-
-        s4.union(s);
-        System.out.println("After s4.union(s), s4 = " + s4 + " which should be: [2, 3, 4]");
-
-        s2.union(s);
-        System.out.println("After s2.union(s), s2 = " + s2 + " which should be: [2, 3, 4, 5]");
-        s.union(s2);
-        System.out.println("After s.union(s2), s = " + s + " which should be: [2, 3, 4, 5]");
-
-        s.union(s3);
-        System.out.println("After s.union(s3), s = " + s + " which should be: [2, 3, 4, 5, 8]" );
-        s3.union(s);
-        System.out.println("After s3.union(s), s3 = " + s3 + " which should be: [2, 3, 4, 5, 8]" );
-
-//        s.intersect(s3);
-//        System.out.println("After s.intersect(s3), s = " + s);
-//
-//        System.out.println("s.cardinality() = " + s.cardinality());
-        // You may want to add more (ungraded) test code here.
     }
 
 
