@@ -279,6 +279,9 @@ public class DList {
 
         System.out.println("Testing insertAfter method: ");
         d.insertAfter(5, d.back());
+        System.out.println(d.back().prev.item + " should be 4");
+        System.out.println(d.back().prev.next.item + " should be 5");
+        System.out.println(d.back().prev.prev.item + " should be 3");
         String s3 = d.toString();
         System.out.println(s3);
         System.out.println(d.back().item);

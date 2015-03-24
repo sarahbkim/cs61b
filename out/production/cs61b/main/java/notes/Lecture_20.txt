@@ -1,0 +1,14 @@
+ALGO ANALYSIS
+=============
+smoosh, hw 3;
+
+int i=0,j=0;
+while(i<ints.length) {
+    ints[j] = ints[i];
+    do {
+        i++;
+    } while((i<ints.length) && (ints[i]==ints[j]));
+    j++;
+}
+
+runs in theta(ints.length) - linear time...

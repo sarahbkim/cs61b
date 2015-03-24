@@ -1,0 +1,4 @@
+Java Interfaces
+================
+- similar to an abstract class but different
+- class can inherit from only one class in Java but many interfaces

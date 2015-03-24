@@ -1,0 +1,105 @@
+============
+DICTIONARIES
+- two-letter words and definitions.
+- word is a 'key' that addresses the definition
+26 x 26 = 676 words
+
+insert a definition into a dictionary:
+- function hashCode() maps each word (i.e. key) to integer 0..675
+- index into array
+
+code example of dictionary
+```
+public class Word {
+    public static final int LETTERS = 26, WORDS = LETTERS * LETTERS;
+    private String word;
+
+    // map a two letter word with a unique # b/w 0 and 675
+    public int hashCode() {
+        return LETTERS * (word.charAt(0) - 'a') + (word.chartAt(1) - 'a');
+    }
+}
+
+public class WordDictionary {
+    private Definition[] defTable = new Definition[Word.WORDS];
+
+    public void insert(Word w, Definition d) {
+        defTable(w.hashCode()) = d;
+    }
+
+    Definition find(Word w) {
+        return defTable(w.hashCode());
+    }
+}
+
+```
+
+HASH TABLES
+===========
+n: number of keys stored in table
+Table of N buckets. N a bit larger than n
+A hash table maps a huge set of possible keys into a N buckets
+by applying a compression function to each hash code
+
+```
+n(hashCode) = hashCode mod N (hashCodes are often negative)
+```
+N.B. mod is not % in Java .. they're different..
+
+Collision: Several keys hash to same bucket, if n(hashCode1) = n(hashCode2)
+
+How to handle collisions?
+Chaining
+========
+- each bucket stores a linked list of entries, called a chain
+- store each key in table with definition.
+entry = (key, value)
+
+
+```
+public Entry insert(key, value) {
+    // compute key's hash code
+    // compress it to determine which bucket to store it in
+    // insert the entry into the bucket's chain
+}
+
+public Entry find(key) {
+    // hash the key
+    // search linked list chain for entry with specified key
+    // if find, return the definition
+}
+
+public Entry remove(key) {
+    // hash the key
+    // search linked list chain for entry with specified key
+    // if find, remove from chain if found
+    // return entry or null
+}
+
+```
+
+2 entries with same key (but different definitions)...
+2 common approaches:
+- #1 (G&T): insert both and if you do a find on the key, return arbitrarily or you can do a findAll operation
+- #2 (G&T): replacement. if you try to insert a duplicate key, override the definition with new one
+
+
+PERFORMANCE
+===========
+Load Factor of a hash table: n / N
+if load factor stays low(.8-1.2) and hash code compression functions are 'good'
+and no duplicate keys... then chains are short,
+=> each operation will then take constant time O(1).
+
+if load factor gets Big(n>>N), theta(n) time (worst case is linear)
+
+HASH CODES & COMPRESSION FUNCTIONS
+==================================
+key -> hash code -> [compression func] ->  [o, N-1]
+ideal: map each key to a random bucket, which each bucket being equally likely
+
+
+compression function choose N to be a big prime number
+Better: h(hashCode) = ((a*hashCode +b) mod p) mod N
+    a, b, p: positive ints
+    p: large prime
