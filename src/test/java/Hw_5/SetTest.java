@@ -1,8 +1,8 @@
 package test.java.Hw_5;
-import org.junit.Before;
+
 import main.java.Hw_5.Set;
 import org.junit.Test;
-
+import org.junit.Before;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
