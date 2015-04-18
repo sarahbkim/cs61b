@@ -218,58 +218,58 @@ public class DList extends List {
         System.out.println("l after insertFront(10) should be [  10  ]: " + l);
     }
 
-    public static void main(String[] argv) {
-        testEmpty();
-        List l = new DList();
-        l.insertFront(new Integer(3));
-        l.insertBack(new Integer(2));
-        l.insertFront(new Integer(1));
-        System.out.println("l is a list of 3 elements: " + l);
-        try {
-            ListNode n;
-            int i = 1;
-            for (n = l.front(); n.isValidNode(); n = n.next()) {
-                System.out.println("n.item() should be " + i + ": " + n.item());
-                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
-                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
-                i++;
-            }
-            System.out.println("After doubling all elements of l: " + l);
-            testInvalidNode(n);
-
-            i = 6;
-            for (n = l.back(); n.isValidNode(); n = n.prev()) {
-                System.out.println("n.item() should be " + i + ": " + n.item());
-                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
-                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
-                i = i - 2;
-            }
-            System.out.println("After doubling all elements of l again: " + l);
-            testInvalidNode(n);
-            System.out.println("front: " + l.front().item);
-            System.out.println("middle: " + l.front().next().item);
-            System.out.println("back: " + l.back().item);
-
-            n = l.front().next();
-            System.out.println("Removing middle element (4) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-            n = l.back();
-            System.out.println("Removing end element (12) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-
-            n = l.front();
-            System.out.println("Removing first element (2) of l: " + n.item());
-            n.remove();
-            System.out.println("l is now: " + l);
-            testInvalidNode(n);
-        } catch (InvalidNodeException lbe) {
-            System.err.println ("Caught InvalidNodeException that should not happen."
-            );
-            System.err.println ("Aborting the testing code.");
-        }
-    }
+//    public static void main(String[] argv) {
+//        testEmpty();
+//        List l = new DList();
+//        l.insertFront(new Integer(3));
+//        l.insertBack(new Integer(2));
+//        l.insertFront(new Integer(1));
+//        System.out.println("l is a list of 3 elements: " + l);
+//        try {
+//            ListNode n;
+//            int i = 1;
+//            for (n = l.front(); n.isValidNode(); n = n.next()) {
+//                System.out.println("n.item() should be " + i + ": " + n.item());
+//                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
+//                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
+//                i++;
+//            }
+//            System.out.println("After doubling all elements of l: " + l);
+//            testInvalidNode(n);
+//
+//            i = 6;
+//            for (n = l.back(); n.isValidNode(); n = n.prev()) {
+//                System.out.println("n.item() should be " + i + ": " + n.item());
+//                n.setItem(new Integer(((Integer) n.item()).intValue() * 2));
+//                System.out.println("n.item() should be " + 2 * i + ": " + n.item());
+//                i = i - 2;
+//            }
+//            System.out.println("After doubling all elements of l again: " + l);
+//            testInvalidNode(n);
+//            System.out.println("front: " + l.front().item);
+//            System.out.println("middle: " + l.front().next().item);
+//            System.out.println("back: " + l.back().item);
+//
+//            n = l.front().next();
+//            System.out.println("Removing middle element (4) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//            n = l.back();
+//            System.out.println("Removing end element (12) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//
+//            n = l.front();
+//            System.out.println("Removing first element (2) of l: " + n.item());
+//            n.remove();
+//            System.out.println("l is now: " + l);
+//            testInvalidNode(n);
+//        } catch (InvalidNodeException lbe) {
+//            System.err.println ("Caught InvalidNodeException that should not happen."
+//            );
+//            System.err.println ("Aborting the testing code.");
+//        }
+//    }
 }

@@ -1,0 +1,54 @@
+Balanced Search Trees
+=====================
+
+2 - 3 - 4 Trees
+---------------
+Perfectly balanced tree. All the leaves are at same depth, so you can
++ find, insert, remove in worst-case O(log n) time
++ Every node as 2, 3, or 4 children, except the leaf nodes
++ # of children is entries + 1 or zero
+
+G&T: "Bottom-up" 2-3-4 trees (called (2, 4) trees...)
+In lecture: "Top-down" 2-3-4 trees (these are better..)
+
+** 3 operations **
+1. Object find(Object k);
+
+2. void insert(Object k, Object e);
+    - walks down the tree in search of key k
+    - if find k, it proceeds to k's "left child"
+        - and continues until hit leaf node
+    - whenever insert() encounters a 3-key node, break up the node so that
+        the middle key is placed in the parent node
+        - (Parent has at most 2 keys; has room for third)
+
+    why we split 3-key nodes:
+        - to make room for new nodes in leaf nodes
+        - to make room for any key that's kicked upstairs
+
+    Sometimes insertion increases depth of tree by 1, by creating a new root
+
+3. remove(Object k, Object e);
+    - Find key k.
+    - If it's in a leaf, remove it
+    - If in internal node, replace it with entry with next higher key
+
+    Eliminates 1-key nodes (except the root) so key can be removed from leaf w/o emptying it
+    a. remove() encounters 1-key node (except root);
+        try to steal a key from an adjacent sibling
+    b. if no adjacent sibling has > 1 key...
+        steal a key from the parent
+    c. if parent is the root and as only 1 key and sibling has only one key
+        pull down entire root, sibling, and self into new root
+        depth of tree decreases...
+
+** Running times **
+A 2-3-4 tree with depth d has between 2^d and 4^d leaves
+- Total number of nodes is n >= 2^(d+1) - 1
+- take log of both sides... -> d is in O(log n)
+- find, insert, remove operations have worst-case times: O(d) = O(log n) where d is depth of tree
+- compare w/ binary search tree, which has a theta(n) worst-case time
+
+** Another approach to duplicate keys **
+- collect all entries that share a common key in 1 node, so that each node's entries is a list of entries
+

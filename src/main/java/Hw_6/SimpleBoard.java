@@ -68,17 +68,37 @@ public class SimpleBoard {
         // Replace the following line with your solution.  Be sure to return false
         //   (rather than throwing a ClassCastException) if "board" is not
         //   a SimpleBoard.
-        return false;
+        if(!(board instanceof SimpleBoard)) {
+            return false;
+        }
+
+        for(int i=0; i<grid.length;i++) {
+            for(int j=0; j<grid[i].length;j++) {
+                if(grid[i][j] != ((SimpleBoard)board).elementAt(i, j)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
      *  Returns a hash code for this SimpleBoard.
      *  @return a number between Integer.MIN_VALUE and Integer.MAX_VALUE.
      */
-
     public int hashCode() {
         // Replace the following line with your solution.
-        return 99;
+        int code = 0;
+        for(int i=0; i < grid.length;i++) {
+            String rowCode = "";
+            for(int j=0;j<grid[i].length;j++) {
+                rowCode += grid[i][j];
+            }
+            code += Integer.parseInt(rowCode);
+        }
+        return code;
     }
+
 
 }

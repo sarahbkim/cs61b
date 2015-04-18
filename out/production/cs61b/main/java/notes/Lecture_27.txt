@@ -1,0 +1,74 @@
+Weighted Graphs
+===============
+Breadth-First Search (BFS):
+- Visit every node in a graph once--
+- Have an arbitrary starting node (similar to level-order tree traversal)
+- Easier to write by using a queue, so that vertices are visited by distance from starting vertex
+
+```
+public void bfs(Vertext u) {
+    u.visit(null);
+    u.visited = true;
+    q = new Queue(u);
+    q.enqueue(u);
+
+    while(q is not empty) {
+        v = q.dequeue();
+        for (each vertex w such tht (v, w) is an edge in E) { // find next one
+            if(!w.visited) {
+                w.visit(v); // do some sort of computation on the vertex
+                w.visited = true; // mark as visited
+                q.enqueue(w); // add just-visited vertex to end of queue
+            }
+        }
+
+    }
+}
+
+
+public class Vertex {
+    protected Vertex parent;
+    protected int depth;
+
+    // a visit routine that calculates how far it is from starting vertex, and find shortest path
+    public void visit(Vertex origin) {
+        this.parent = origin;
+        if(origin == null) {
+            this.depth = 0;
+        } else {
+            this.depth = origin.depth + 1;
+        }
+    }
+}
+
+```
+
+* When edge (v, w) is traversed to visit w,
+    + depth of w = depth of v + 1
+    + and v becomes the parent of w
+
+* N.B. find shortest path from any vertex to start vertex by following parent pointers!
+
+Running Times
+-------------
+* BFS runs in O(|v| +|e|) time with an adjacency list
+* If use an adjacency matrix, will run in O(|v|^2) time
+
+Weighted Graphs
+===============
+- Each edge labeled with a numerical weight (weight can express cost of flying, resistance bw networks, etc)
+- Adjacency matrix:
+    + use an array of ints/doubles instead of booleans
+    + for no edge, use "-1"
+    + if need to use negative #'s, have 2 arrays, one with booleans for edge existence, and another
+        to represent the weight between the edges
+- Adjacency list: Each list node includes a weight
+
+Problems:
+- "Shortest path problem"
+- "Minimum spanning tree problem"
+    + Each node of graph is an outlet or a source of electricity
+    + Edges labeled with length of wire
+    + Q: How to connect all nodes with shortest length of wire?
+
+    + Kruskal's Algorithm -- read G&T to understand fully

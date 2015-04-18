@@ -37,6 +37,7 @@ public class Homework6Test {
         for (int i = 0; i < numBoards; i++) {
             table.insert(randomBoard(), new Integer(i));
         }
+        System.out.println(table.toString());
     }
 
     /**

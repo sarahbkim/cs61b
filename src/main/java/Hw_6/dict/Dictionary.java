@@ -2,6 +2,8 @@ package main.java.Hw_6.dict;
 
 /* Dictionary.java */
 
+import main.java.Hw_5.List.InvalidNodeException;
+
 /**
  *  An interface for (unordered) dictionary ADTs.
  *
@@ -50,7 +52,7 @@ public interface Dictionary {
      *          no entry contains the specified key.
      **/
 
-    public Entry find(Object key);
+    public Entry find(Object key) throws InvalidNodeException;
 
     /**
      *  Remove an entry with the specified key.  If such an entry is found,
