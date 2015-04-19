@@ -23,6 +23,7 @@ public class HashTableChained implements Dictionary {
      **/
     int size;
     int maxSize;
+    int collissions;
     ArrayList<DList> hash;
 
     /**
@@ -34,6 +35,7 @@ public class HashTableChained implements Dictionary {
     public HashTableChained(int sizeEstimate) {
         // Your solution here.
         size = 0;
+        collissions = 0;
         maxSize = sizeEstimate;
 
         // make sure input size is a positive number
@@ -59,6 +61,7 @@ public class HashTableChained implements Dictionary {
         // Your solution here.
         size = 0;
         maxSize = 109;
+        collissions = 0;
         hash = new ArrayList<DList>(maxSize);
 
         for(int i = 0; i < maxSize; i++) {
@@ -140,9 +143,17 @@ public class HashTableChained implements Dictionary {
         } else {
             // found same key...
             DList l = hash.get(compKey);
+            collissions++;
             l.insertBack(newEntry);
         }
         return newEntry;
+    }
+
+    /**
+     * @return number of times there was a duplicate hashcode
+     */
+    public int getCollissions() {
+        return collissions;
     }
 
     /**

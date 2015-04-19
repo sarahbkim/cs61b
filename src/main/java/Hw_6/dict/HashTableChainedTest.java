@@ -73,30 +73,30 @@ public class HashTableChainedTest {
         for(int i=0;i<numBoards;i++) {
             table.insert(randomBoard(), new Integer(i));
         }
-        System.out.println(table.toString());
+        System.out.println("colls: " + table.getCollissions());
     }
 
 
     @Test
     public void testInsert() throws Exception {
 
-//        HashTableChained h = new HashTableChained();
-//        Object a = "key1";
-//        Object aval = "value1";
-//        Object b = "key1";
-//        Object bval = "value2";
-//
-//        Object c = "1290389015190839210461288129";
-//
-//        h.insert(a, aval);
-//        assertEquals(1, h.size());
-//        h.insert(b, bval);
-//        assertEquals(1, h.size());
-//        h.insert(c, bval);
-//        assertEquals(2, h.size());
+        HashTableChained h = new HashTableChained();
+        Object a = "key1";
+        Object aval = "value1";
+        Object b = "key1";
+        Object bval = "value2";
+
+        Object c = "1290389015190839210461288129";
+
+        h.insert(a, aval);
+        assertEquals(1, h.size());
+        h.insert(b, bval);
+        assertEquals(1, h.size());
+        h.insert(c, bval);
+        assertEquals(2, h.size());
 
         HashTableChained table = new HashTableChained(100);
-        initTable(table, 200);
+        initTable(table, 100);
         assertFalse(table.isEmpty());
 
     }
